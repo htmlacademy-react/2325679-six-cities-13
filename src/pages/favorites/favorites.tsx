@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Logo from '../../components/logo/logo';
 
 function FavoritesPage(): JSX.Element {
   return (
@@ -7,17 +7,7 @@ function FavoritesPage(): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link to="/">
-                <a className="header__logo-link">
-                  <img
-                    className="header__logo"
-                    src="img/logo.svg"
-                    alt="6 cities logo"
-                    width={81}
-                    height={41}
-                  />
-                </a>
-              </Link>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">

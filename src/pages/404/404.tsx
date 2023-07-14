@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function LoginPage(): JSX.Element {
+function Page404(): JSX.Element {
   return (
     <div className="page page--gray page--login">
       <header className="header">
@@ -24,37 +24,17 @@ function LoginPage(): JSX.Element {
       </header>
       <main className="page__main page__main--login">
         <div className="page__login-container container">
-          <section className="login">
-            <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" action="#" method="post">
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">E-mail</label>
-                <input
-                  className="login__input form__input"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">Password</label>
-                <input
-                  className="login__input form__input"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
+          <section className="login" style={{ paddingTop: 0 }}>
+            <div className="cities__status-wrapper tabs__content">
+              <b className="cities__status">404 page not found</b>
+              <p className="cities__status-description">We could not find such a page<br /><br /></p>
               <button className="login__submit form__submit button" type="submit">
-                Sign in
+                <Link to="/">На главную страницу</Link>
               </button>
-            </form>
+            </div>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
             </div>
           </section>
         </div>
@@ -63,4 +43,4 @@ function LoginPage(): JSX.Element {
   );
 }
 
-export default LoginPage;
+export default Page404;

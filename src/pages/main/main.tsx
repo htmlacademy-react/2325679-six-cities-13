@@ -1,11 +1,12 @@
-import PlaceCard from '../../components/place-card/place-card';
 import Logo from '../../components/logo/logo';
+import {Offer} from '../../types/offer';
+import ListPlaceCard from '../../components/list-place-card/list-place-card';
 
 type MainPageProps = {
-  offersCount: number;
+  offers: Offer[];
 }
 
-function MainPage({ offersCount }: MainPageProps): JSX.Element {
+function MainPage({ offers }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -80,7 +81,7 @@ function MainPage({ offersCount }: MainPageProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by&nbsp;</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -107,11 +108,7 @@ function MainPage({ offersCount }: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: offersCount }, (_, index) => (
-                  <PlaceCard key={index} />
-                ))}
-              </div>
+              <ListPlaceCard offers = {offers}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map" />

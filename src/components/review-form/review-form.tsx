@@ -1,14 +1,14 @@
 import { ChangeEvent, useState } from 'react';
 
 function ReviewForm (): JSX.Element {
-  const [review, setUserComment] = useState({
+  const [review, setUserReview] = useState({
     rating: 0,
     comment: ''
   });
 
   const handleRatingChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     const value = Number(target.value);
-    setUserComment({
+    setUserReview({
       ...review,
       rating: value
     });
@@ -16,7 +16,7 @@ function ReviewForm (): JSX.Element {
 
   const handleCommentChange = ({target}: ChangeEvent<HTMLTextAreaElement>) => {
     const value = target.value;
-    setUserComment({
+    setUserReview({
       ...review,
       comment: value
     });

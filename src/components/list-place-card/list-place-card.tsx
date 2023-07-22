@@ -12,8 +12,8 @@ function ListPlaceCard({ offers } : ListPlaceCardProps): JSX.Element {
   const handleActiveCard = (id?: string) => setActiveCard(id || '');
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((value, index) => (
-        <PlaceCard key={value.id} offer={offers[index]} onMouseEvent={handleActiveCard} />
+      {offers.map((offer) => (
+        <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleActiveCard} />
       ))};
     </div>
   );

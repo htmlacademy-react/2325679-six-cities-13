@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../consts';
+import {AppRoute, AuthorizationStatus} from '../../constants';
 import MainPage from '../../pages/main/main';
 import LoginPage from '../../pages/login/login';
 import FavoritesPage from '../../pages/favorites/favorites';
@@ -16,7 +16,7 @@ function App({ offers }: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<MainPage offers = {offers}/>} />
+        <Route path={AppRoute.Main} element={<MainPage offers={offers}/>} />
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route path={AppRoute.Favorites}
           element={
@@ -27,8 +27,8 @@ function App({ offers }: AppScreenProps): JSX.Element {
             </PrivateRoute>
           }
         />
-        <Route path={AppRoute.Offer} element={<OfferPage offers = {offers} />}>
-          <Route path=':id' element={<OfferPage offers = {offers} />} />
+        <Route path={AppRoute.Offer} element={<OfferPage offers={offers} />}>
+          <Route path=':id' element={<OfferPage offers={offers} />} />
         </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>

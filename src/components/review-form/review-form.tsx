@@ -25,33 +25,23 @@ function ReviewForm(): JSX.Element {
 
   const ratingData = [
     {
-      defaultValue: 5,
-      id: '5-stars',
-      htmlFor: '5-stars',
+      value: 5,
       title: 'perfect'
     },
     {
-      defaultValue: 4,
-      id: '4-stars',
-      htmlFor: '4-stars',
+      value: 4,
       title: 'good'
     },
     {
-      defaultValue: 3,
-      id: '3-stars',
-      htmlFor: '3-stars',
+      value: 3,
       title: 'not bad'
     },
     {
-      defaultValue: 2,
-      id: '2-stars',
-      htmlFor: '2-stars',
+      value: 2,
       title: 'badly'
     },
     {
-      defaultValue: 1,
-      id: '1-stars',
-      htmlFor: '1-stars',
+      value: 1,
       title: 'terribly'
     }
   ];
@@ -63,17 +53,17 @@ function ReviewForm(): JSX.Element {
       </label>
       <div className="reviews__rating-form form__rating">
         {ratingData.map((rating) => (
-          <React.Fragment key={rating.defaultValue}>
+          <React.Fragment key={rating.title}>
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              defaultValue={rating.defaultValue}
-              id={rating.id}
+              defaultValue={rating.value}
+              id={`${rating.value}-stars`}
               type="radio"
               onChange={handleRatingChange}
             />
             <label
-              htmlFor={rating.htmlFor}
+              htmlFor={`${rating.value}-stars`}
               className="reviews__rating-label form__rating-label"
               title={rating.title}
             >

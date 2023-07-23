@@ -18,10 +18,7 @@ function PlaceCard({ offer, onMouseEvent }: PlaceCardProps): JSX.Element {
   return (
     <Link className="game__back" to={`${AppRoute.Offer}/${offer.id}`}>
       <article className="cities__card place-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        {offer.isPremium ?
-          <div className="place-card__mark">
-            <span>Premium</span>
-          </div> : ''}
+        {offer.isPremium && (<div className="place-card__mark"> <span>Premium</span> </div>)}
         <div className="cities__image-wrapper place-card__image-wrapper">
           <a href="#">
             <img
@@ -40,7 +37,7 @@ function PlaceCard({ offer, onMouseEvent }: PlaceCardProps): JSX.Element {
               <span className="place-card__price-text">&nbsp;/&nbsp;night</span>
             </div>
             <button
-              className={offer.isFavorite ? 'place-card__bookmark-button place-card__bookmark-button--active button' : 'place-card__bookmark-button button'}
+              className={`button place-card__bookmark-button ${offer.isFavorite ? 'place-card__bookmark-button--active button' : ''}`}
               type="button"
             >
               <svg

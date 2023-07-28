@@ -4,7 +4,7 @@ import {Location} from '../../types/location';
 import {Offer} from '../../types/offer';
 import {useRef, useEffect} from 'react';
 import useMap from '../../hooks/use-map';
-import {URL_MARKER_DEFAULT} from '../../constants';
+import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../constants';
 
 type MapProps = {
   location: Location;
@@ -17,11 +17,12 @@ const defaultCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-/* const currentCustomIcon = leaflet.icon({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const currentCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
-}); */
+});
 
 function Map({location, offers}: MapProps) {
   const mapRef = useRef(null);

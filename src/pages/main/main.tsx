@@ -114,7 +114,7 @@ function MainPage({ offers, location }: MainPageProps): JSX.Element {
               <ListPlaceCard offers = {offers}/>
             </section>
             <div className="cities__right-section">
-              <Map location={location} offers = {offers}></Map>
+              <Map location={location} offers={offers}></Map>
             </div>
           </div>
         </div>

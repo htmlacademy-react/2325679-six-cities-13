@@ -1,6 +1,14 @@
 import React from 'react';
 import { ChangeEvent, useState } from 'react';
 
+const ratingData = [
+  { value: 5, title: 'perfect' },
+  { value: 4, title: 'good' },
+  { value: 3, title: 'not bad' },
+  { value: 2, title: 'badly' },
+  { value: 1, title: 'terribly' }
+];
+
 function ReviewForm(): JSX.Element {
   const [review, setUserReview] = useState({
     rating: 0,
@@ -22,29 +30,6 @@ function ReviewForm(): JSX.Element {
       comment: value
     });
   };
-
-  const ratingData = [
-    {
-      value: 5,
-      title: 'perfect'
-    },
-    {
-      value: 4,
-      title: 'good'
-    },
-    {
-      value: 3,
-      title: 'not bad'
-    },
-    {
-      value: 2,
-      title: 'badly'
-    },
-    {
-      value: 1,
-      title: 'terribly'
-    }
-  ];
 
   return (
     <form className="reviews__form form" action="#" method="post">
@@ -72,7 +57,7 @@ function ReviewForm(): JSX.Element {
               </svg>
             </label>
           </React.Fragment>
-        ))};
+        ))}
       </div>
       <textarea
         className="reviews__textarea form__textarea"

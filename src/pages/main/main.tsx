@@ -1,12 +1,15 @@
 import Logo from '../../components/logo/logo';
 import {Offer} from '../../types/offer';
+import {Location} from '../../types/location';
 import ListPlaceCard from '../../components/list-place-card/list-place-card';
+import Map from '../../components/map/map';
 
 type MainPageProps = {
   offers: Offer[];
+  location: Location;
 }
 
-function MainPage({ offers }: MainPageProps): JSX.Element {
+function MainPage({ offers, location }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -111,7 +114,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
               <ListPlaceCard offers = {offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <Map location={location} offers={offers}></Map>
             </div>
           </div>
         </div>

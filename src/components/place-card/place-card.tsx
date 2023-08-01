@@ -6,10 +6,10 @@ import { AppRoute } from '../../constants';
 type PlaceCardProps = {
   offer: Offer;
   onMouseEvent: (id?: string) => void;
-  className: string;
+  layout: string;
 }
 
-function PlaceCard({ offer, onMouseEvent, className }: PlaceCardProps): JSX.Element {
+function PlaceCard({ offer, onMouseEvent, layout }: PlaceCardProps): JSX.Element {
   const handleMouseEnter: MouseEventHandler<HTMLElement> = () => {
     onMouseEvent(offer.id);
   };
@@ -18,20 +18,22 @@ function PlaceCard({ offer, onMouseEvent, className }: PlaceCardProps): JSX.Elem
     onMouseEvent('');
   };
 
+  const isOfferLayout = layout === 'offers';
+  const articleClassName = isOfferLayout ? 'near-places__card' : 'cities__card';
+  const imageWrapperClassName = isOfferLayout ? 'near-places__image-wrapper' : 'cities__image-wrapper';
+
   return (
     <Link className="game__back" to={`${AppRoute.Offer}/${offer.id}`}>
-      <article className={`${className === 'near-' ? 'near-places__' : className}card place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <article className={`${articleClassName} place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {offer.isPremium && (<div className="place-card__mark"> <span>Premium</span> </div>)}
-        <div className={`${className === 'near-' ? 'near-places__' : className}image-wrapper place-card__image-wrapper`}>
-          <a href="#">
-            <img
-              className="place-card__image"
-              src={offer.previewImage}
-              width={260}
-              height={200}
-              alt={offer.title}
-            />
-          </a>
+        <div className={`${imageWrapperClassName} place-card__image-wrapper`}>
+          <img
+            className="place-card__image"
+            src={offer.previewImage}
+            width={260}
+            height={200}
+            alt={offer.title}
+          />
         </div>
         <div className="place-card__info">
           <div className="place-card__price-wrapper">

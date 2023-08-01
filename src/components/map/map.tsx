@@ -9,8 +9,7 @@ import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../constants';
 type MapProps = {
   location: Location;
   offers: Offer[];
-  className: string;
-  style: object;
+  layout: string;
 }
 
 const defaultCustomIcon = leaflet.icon({
@@ -26,9 +25,12 @@ const currentCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-function Map({location, offers, className, style}: MapProps) {
+function Map({location, offers, layout}: MapProps) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
+  const isOfferMap = layout === 'offers';
+  const stylesMainMap = {height: '560px', width: '500px'};
+  const stylesOfferMap = {width: '1149px', height: '579px', margin: '0px auto 50px'};
 
   useEffect(() => {
     if (map) {
@@ -47,8 +49,8 @@ function Map({location, offers, className, style}: MapProps) {
 
   return (
     <section
-      className={`${className} map`}
-      style={style}
+      className={`${isOfferMap ? 'offer__map' : 'cities__map'} map`}
+      style={isOfferMap ? stylesOfferMap : stylesMainMap}
       ref={mapRef}
     >
     </section>

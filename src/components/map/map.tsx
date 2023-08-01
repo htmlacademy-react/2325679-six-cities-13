@@ -9,6 +9,8 @@ import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../constants';
 type MapProps = {
   location: Location;
   offers: Offer[];
+  className: string;
+  style: object;
 }
 
 const defaultCustomIcon = leaflet.icon({
@@ -24,7 +26,7 @@ const currentCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-function Map({location, offers}: MapProps) {
+function Map({location, offers, className, style}: MapProps) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
 
@@ -45,8 +47,8 @@ function Map({location, offers}: MapProps) {
 
   return (
     <section
-      className="cities__map map"
-      style={{height: '560px', width: '500px'}}
+      className={`${className} map`}
+      style={style}
       ref={mapRef}
     >
     </section>

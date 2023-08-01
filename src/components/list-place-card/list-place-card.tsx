@@ -4,16 +4,18 @@ import {useState} from 'react';
 
 type ListPlaceCardProps = {
   offers: Offer[];
+  className: string;
+  count: number;
 }
 
-function ListPlaceCard({ offers } : ListPlaceCardProps): JSX.Element {
+function ListPlaceCard({ offers, className, count } : ListPlaceCardProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeCard, setActiveCard] = useState('');
   const handleActiveCard = (id?: string) => setActiveCard(id || '');
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => (
-        <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleActiveCard} />
+    <div className={`${className === 'near-' ? 'near-places__list' : 'cities__places-list'} places__list tabs__content`}>
+      {offers.slice(0, count).map((offer) => (
+        <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleActiveCard} className={className} />
       ))};
     </div>
   );

@@ -6,20 +6,23 @@ import { AppRoute } from '../../constants';
 type PlaceCardProps = {
   offer: Offer;
   onMouseEvent: (id?: string) => void;
+  className: string;
 }
 
-function PlaceCard({ offer, onMouseEvent }: PlaceCardProps): JSX.Element {
+function PlaceCard({ offer, onMouseEvent, className }: PlaceCardProps): JSX.Element {
   const handleMouseEnter: MouseEventHandler<HTMLElement> = () => {
     onMouseEvent(offer.id);
   };
+
   const handleMouseLeave: MouseEventHandler<HTMLElement> = () => {
     onMouseEvent('');
   };
+
   return (
     <Link className="game__back" to={`${AppRoute.Offer}/${offer.id}`}>
-      <article className="cities__card place-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <article className={`${className === 'near-' ? 'near-places__' : className}card place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {offer.isPremium && (<div className="place-card__mark"> <span>Premium</span> </div>)}
-        <div className="cities__image-wrapper place-card__image-wrapper">
+        <div className={`${className === 'near-' ? 'near-places__' : className}image-wrapper place-card__image-wrapper`}>
           <a href="#">
             <img
               className="place-card__image"

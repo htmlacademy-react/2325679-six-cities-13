@@ -111,10 +111,10 @@ function MainPage({ offers, location }: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <ListPlaceCard offers = {offers}/>
+              <ListPlaceCard offers={offers} className='cities__' count={offers.length} />
             </section>
             <div className="cities__right-section">
-              <Map location={location} offers={offers}></Map>
+              <Map location={location} offers={offers} className='cities__map' style={{height: '560px', width: '500px'}}></Map>
             </div>
           </div>
         </div>

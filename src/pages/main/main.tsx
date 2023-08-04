@@ -3,7 +3,7 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
 import LocationsList from '../../components/location-list/location-list';
 import { useAppSelector } from '../../hooks';
-import NoOffers from '../no-offers/no-offers';
+import NoOffers from '../../components/no-offers/no-offers';
 
 function MainPage(): JSX.Element {
 

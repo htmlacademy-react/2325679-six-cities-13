@@ -1,15 +1,15 @@
-import leaflet from 'leaflet';
+import leaflet, { Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {Location} from '../../types/location';
-import {Offer} from '../../types/offer';
-import {useRef, useEffect} from 'react';
+import { Offer } from '../../types/offer';
+import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../constants';
+import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../constants';
 
 type MapProps = {
-  location: Location;
+  location?: string;
   offers: Offer[];
   layout: string;
+  selectedOfferId: string;
 }
 
 const defaultCustomIcon = leaflet.icon({
@@ -18,34 +18,48 @@ const defaultCustomIcon = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const currentCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-function Map({location, offers, layout}: MapProps) {
+function Map({ offers, layout, selectedOfferId }: MapProps) {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, location);
+  const locationData = offers[0].city.location;
+  const map = useMap(mapRef, locationData);
   const isOfferMap = layout === 'offers';
-  const stylesMainMap = {height: '560px', width: '500px'};
-  const stylesOfferMap = {width: '1149px', height: '579px', margin: '0px auto 50px'};
+  const stylesMainMap = { height: '560px', width: '500px' };
+  const stylesOfferMap = { width: '1149px', height: '579px', margin: '0px auto 50px' };
 
   useEffect(() => {
     if (map) {
+      const markerLayer = layerGroup().addTo(map);
+      map.setView(
+        {
+          lat: locationData.latitude,
+          lng: locationData.longitude,
+        },
+        locationData.zoom,
+      );
       offers.forEach((offer) => {
-        leaflet
-          .marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          }, {
-            icon: defaultCustomIcon,
-          })
-          .addTo(map);
+        const marker = new Marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
+        });
+
+        marker.setIcon(
+          selectedOfferId && selectedOfferId === offer.id
+            ? currentCustomIcon
+            : defaultCustomIcon
+        ).addTo(markerLayer);
       });
+
+      return () => {
+        map.removeLayer(markerLayer);
+      };
     }
-  }, [map, offers]);
+  }, [map, offers, locationData.latitude, locationData.longitude, locationData.zoom, selectedOfferId]);
 
   return (
     <section

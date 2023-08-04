@@ -1,6 +1,7 @@
 import { Offer } from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
-import { useState } from 'react';
+import { useAppDispatch } from '../../hooks/index';
+import { selectOffer } from '../../store/action';
 
 type PlaceCardListProps = {
   offers: Offer[];
@@ -9,9 +10,12 @@ type PlaceCardListProps = {
 }
 
 function PlaceCardList({ offers, layout, count }: PlaceCardListProps): JSX.Element | null{
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeCard, setActiveCard] = useState('');
-  const handleActiveCard = (id?: string) => setActiveCard(id || '');
+  const dispatch = useAppDispatch();
+
+  const handleselectedOffer = (id: string) => {
+    dispatch(selectOffer({id}));
+  };
+
   const isOfferLayout = layout === 'offers';
   const hasOffers = offers.length !== 0;
 
@@ -24,7 +28,7 @@ function PlaceCardList({ offers, layout, count }: PlaceCardListProps): JSX.Eleme
     (
       <div className={`${isOfferLayout ? 'near-places__list' : 'cities__places-list'} places__list tabs__content`}>
         {offers.slice(0, count).map((offer) => (
-          <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleActiveCard} layout={`${isOfferLayout ? 'offers' : 'main'}`} />
+          <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleselectedOffer} layout={`${isOfferLayout ? 'offers' : 'main'}`} />
         ))}
       </div>
     )

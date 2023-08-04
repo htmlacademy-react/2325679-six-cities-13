@@ -10,14 +10,14 @@ export const offers: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.37454,
+        latitude: 52.37544,
         longitude: 4.897976,
         zoom: 13
       }
     },
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.85309666406198,
+      latitude: 52.3609553943508,
+      longitude: 4.88309666406198,
       zoom: 16
     },
     isFavorite: true,
@@ -31,16 +31,16 @@ export const offers: Offer[] = [
     price: 379,
     previewImage: 'https://13.design.pages.academy/static/hotel/1.jpg',
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
-        latitude: 52.37454,
-        longitude: 4.897976,
+        latitude: 48.85661,
+        longitude: 2.351499,
         zoom: 13
       }
     },
     location: {
-      latitude: 52.3609553943508,
-      longitude: 4.85309666406198,
+      latitude: 48.837610000000005,
+      longitude: 2.364499,
       zoom: 16
     },
     isFavorite: false,
@@ -54,16 +54,16 @@ export const offers: Offer[] = [
     price: 194,
     previewImage: 'https://13.design.pages.academy/static/hotel/17.jpg',
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
-        latitude: 52.37454,
-        longitude: 4.897976,
+        latitude: 48.85661,
+        longitude: 2.351499,
         zoom: 13
       }
     },
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.929309666406198,
+      latitude: 48.83961,
+      longitude: 2.342499,
       zoom: 16
     },
     isFavorite: true,
@@ -77,16 +77,16 @@ export const offers: Offer[] = [
     price: 263,
     previewImage: 'https://13.design.pages.academy/static/hotel/14.jpg',
     city: {
-      name: 'Amsterdam',
+      name: 'Hamburg',
       location: {
-        latitude: 52.37454,
-        longitude: 4.897976,
+        latitude: 53.550341,
+        longitude: 10.000654,
         zoom: 13
       }
     },
     location: {
-      latitude: 52.3809553943508,
-      longitude: 4.939309666406198,
+      latitude: 53.558341000000006,
+      longitude: 9.999654000000001,
       zoom: 16
     },
     isFavorite: false,

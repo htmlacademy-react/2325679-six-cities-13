@@ -1,23 +1,22 @@
 import Logo from '../../components/logo/logo';
 import { useParams } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import NoOffers from '../../pages/no-offers/no-offers';
 import ReviewForm from '../../components/review-form/review-form';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
-import { Location } from '../../types/location';
 import Page404 from '../404/404';
+import { useAppSelector } from '../../hooks';
 
 type OfferPageProps = {
   offers: Offer[];
   reviews: Review[];
-  location: Location;
 }
 
-function OfferPage({ offers, reviews, location }: OfferPageProps): JSX.Element {
+function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
+  const selectedOfferId = useAppSelector((store) => store.selectedOfferId);
 
   const currentOffer = offers.find((offer) => {
     if (id === offer.id) {
@@ -32,7 +31,7 @@ function OfferPage({ offers, reviews, location }: OfferPageProps): JSX.Element {
   const NeighbourOffers = offers.slice(0, 3);
 
   if (!currentOffer) {
-    return <NoOffers />;
+    return <Page404 />;
   }
 
   return (
@@ -203,7 +202,7 @@ function OfferPage({ offers, reviews, location }: OfferPageProps): JSX.Element {
                 </section>
               </div>
             </div>
-            <Map location={location} offers={NeighbourOffers} layout='offers'></Map>
+            <Map offers={NeighbourOffers} layout='offers' selectedOfferId={selectedOfferId}></Map>
           </section>
           <div className="container">
             <section className="near-places places">

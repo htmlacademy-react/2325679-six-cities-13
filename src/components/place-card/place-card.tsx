@@ -5,7 +5,7 @@ import { AppRoute } from '../../constants';
 
 type PlaceCardProps = {
   offer: Offer;
-  onMouseEvent: (id?: string) => void;
+  onMouseEvent: (id: string) => void;
   layout: string;
 }
 

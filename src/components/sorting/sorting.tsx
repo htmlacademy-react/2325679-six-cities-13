@@ -8,11 +8,11 @@ import { State } from '../../types/state';
 
 function Sorting(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [isClickedSort, setClickSort] = useState(false);
+  const [isShow, setClickSort] = useState(false);
   const selectedSortingType = useAppSelector((store: State) => store.currentSortingType);
 
   const handleSortClick: MouseEventHandler<HTMLSpanElement> = () => {
-    setClickSort(!isClickedSort);
+    setClickSort(!isShow);
   };
 
   const handleSortOptionClick: MouseEventHandler<HTMLLIElement> = (event) => {
@@ -20,14 +20,14 @@ function Sorting(): JSX.Element {
     setClickSort(false);
   };
 
-  const ulClassName = `places__options places__options--custom ${isClickedSort ? 'places__options--opened' : ''}`;
-  const currentSortingOption = SORT_OPTIONS.find((option) => option.type === selectedSortingType);
+  const ulClassName = `places__options places__options--custom ${isShow ? 'places__options--opened' : ''}`;
+  const currentSortingOption = SORT_OPTIONS.find((option) => option.type === selectedSortingType) || SORT_OPTIONS[0];
 
   return (
-    <form className="places__sorting" action="#" method="get">
+    <div className="places__sorting">
       <span className="places__sorting-caption">Sort by&nbsp;</span>
       <span className="places__sorting-type" tabIndex={0} onClick={handleSortClick}>
-        {currentSortingOption?.title}
+        {currentSortingOption.title}
         <svg className="places__sorting-arrow" width={7} height={4}>
           <use xlinkHref="#icon-arrow-select" />
         </svg>
@@ -43,7 +43,7 @@ function Sorting(): JSX.Element {
             {option.title}
           </li>))}
       </ul>
-    </form>
+    </div>
   );
 }
 

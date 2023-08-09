@@ -1,4 +1,4 @@
-import { Sorting, SortingType } from './types/sorting';
+import { SortingOption, SortingType } from './types/sorting';
 
 export const Parameters = {
   OffersCount: 5
@@ -27,7 +27,7 @@ export const URL_MARKER_CURRENT = 'https://assets.htmlacademy.ru/content/intensi
 
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
-export const SORT_OPTIONS: Sorting[] = [
+export const SORT_OPTIONS: SortingOption[] = [
   { type: 'popular', title: 'Popular'},
   { type: 'priceRaise', title: 'Price: low to high'},
   { type: 'priceFall', title: 'Price: hign to low'},

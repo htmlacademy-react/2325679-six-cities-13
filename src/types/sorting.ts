@@ -1,6 +1,6 @@
 export type SortingType = 'popular' | 'priceRaise' | 'priceFall' | 'top';
 
-export type Sorting = {
+export type SortingOption = {
   type: SortingType;
   title: string;
 };

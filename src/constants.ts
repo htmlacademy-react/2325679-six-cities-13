@@ -35,3 +35,9 @@ export const SORT_OPTIONS: SortingOption[] = [
 ];
 
 export const DEFAULT_SORTING_TYPE : SortingType = SORT_OPTIONS[0].type;
+
+export enum APIRoute {
+  Offers = '/offers'
+}
+
+export const TIMEOUT_SHOW_ERROR = 2000;

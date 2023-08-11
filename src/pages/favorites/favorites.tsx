@@ -1,11 +1,9 @@
 import Logo from '../../components/logo/logo';
+import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-}
-
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
+function FavoritesPage(): JSX.Element {
+  const offers : Offer[] = useAppSelector((store) => store.offersByCity);
   return (
     <div className="page">
       <header className="header">

@@ -31,6 +31,12 @@ function ReviewForm(): JSX.Element {
     });
   };
 
+  let disableSubmitButton = true;
+
+  if (review.comment.length > 50 && review.rating !== 0) {
+    disableSubmitButton = false;
+  }
+
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">
@@ -77,6 +83,7 @@ function ReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
+          disabled={disableSubmitButton}
         >
           Submit
         </button>

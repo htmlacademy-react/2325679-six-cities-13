@@ -6,16 +6,23 @@ import FavoritesPage from '../../pages/favorites/favorites';
 import OfferPage from '../../pages/offer/offer';
 import Page404 from '../../pages/404/404';
 import PrivateRoute from '../private-route/private-route';
-import {Offer} from '../../types/offer';
 import { Review } from '../../types/review';
-
+import {useAppSelector} from '../../hooks';
+import Loader from '../loader/loader';
 
 type AppScreenProps = {
-  offers: Offer[];
   reviews: Review[];
 }
 
-function App({ offers, reviews }: AppScreenProps): JSX.Element {
+function App({ reviews }: AppScreenProps): JSX.Element {
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <Loader />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -26,12 +33,12 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
             <PrivateRoute
               authorizationStatus={AuthorizationStatus.NoAuth}
             >
-              <FavoritesPage offers = {offers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />
-        <Route path={AppRoute.Offer} element={<OfferPage offers={offers} reviews={reviews} />}>
-          <Route path=':id' element={<OfferPage offers={offers} reviews={reviews} />} />
+        <Route path={AppRoute.Offer} element={<OfferPage reviews={reviews} />}>
+          <Route path=':id' element={<OfferPage reviews={reviews} />} />
         </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>

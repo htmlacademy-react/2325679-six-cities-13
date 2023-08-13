@@ -1,6 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { offers } from '../mocks/offers';
-import { changeCity, getOffers, selectOffer, sortOffers } from './action';
+import { changeCity, getOffers, loadOffers, selectOffer, sortOffers, setError, setOffersDataLoadingStatus } from './action';
 import { CITIES, DEFAULT_SORTING_TYPE } from '../constants';
 import { Offer } from '../types/offer';
 import { sortPriceUp, sortPriceDown, sortRate } from '../utils';
@@ -12,16 +11,18 @@ type InitialState = {
   offersByCity: Offer[];
   selectedOfferId: string;
   currentSortingType: SortingType;
+  error: string | null;
+  isOffersDataLoading: boolean;
 };
 
 const initialState : InitialState = {
   city: CITIES[0],
-  offers: offers,
-  offersByCity: offers.filter((offer) => (
-    offer.city.name === CITIES[0]
-  )),
+  offers: [],
+  offersByCity: [],
   selectedOfferId:'',
-  currentSortingType: DEFAULT_SORTING_TYPE
+  currentSortingType: DEFAULT_SORTING_TYPE,
+  error: null,
+  isOffersDataLoading: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -50,6 +51,18 @@ const reducer = createReducer(initialState, (builder) => {
           offer.city.name === state.city
         )); break;
       }
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+      state.offersByCity = action.payload.filter((offer) => (
+        offer.city.name === CITIES[0]
+      ));
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
 });
 

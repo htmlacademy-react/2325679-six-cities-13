@@ -10,14 +10,13 @@ import Page404 from '../404/404';
 import { useAppSelector } from '../../hooks';
 
 type OfferPageProps = {
-  offers: Offer[];
   reviews: Review[];
 }
 
-function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
+function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
   const selectedOfferId = useAppSelector((store) => store.selectedOfferId);
-
+  const offers : Offer[] = useAppSelector((store) => store.offersByCity);
   const currentOffer = offers.find((offer) => {
     if (id === offer.id) {
       return offer;

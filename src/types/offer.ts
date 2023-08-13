@@ -23,4 +23,4 @@ export type Offer = {
   rating: number;
 };
 
-
+export type Offers = Offer[];

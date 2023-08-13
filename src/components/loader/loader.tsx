@@ -1,6 +1,8 @@
+import './loader.css';
+
 function Loader(): JSX.Element {
   return (
-    <p>Loading ...</p>
+    <span className="loader"></span>
   );
 }
 

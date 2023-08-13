@@ -1,9 +1,17 @@
 import Logo from '../../components/logo/logo';
 import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
+import FavoritesEmptyPage from '../favorites-empty/favorites-empty';
 
 function FavoritesPage(): JSX.Element {
-  const offers : Offer[] = useAppSelector((store) => store.offersByCity);
+  const offers: Offer[] = useAppSelector((store) => store.offersByCity);
+
+  if (offers.length === 0) {
+    return (
+      <FavoritesEmptyPage />
+    );
+  }
+
   return (
     <div className="page">
       <header className="header">

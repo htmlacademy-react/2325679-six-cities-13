@@ -5,6 +5,7 @@ import LocationsList from '../../components/location-list/location-list';
 import { useAppSelector } from '../../hooks';
 import NoOffers from '../../components/no-offers/no-offers';
 import Sorting from '../../components/sorting/sorting';
+import Auth from '../../components/auth/auth';
 
 function MainPage(): JSX.Element {
   const offers = useAppSelector((store) => store.offersByCity);
@@ -19,27 +20,7 @@ function MainPage(): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    href="#"
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
-                    </span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <Auth />
           </div>
         </div>
       </header>

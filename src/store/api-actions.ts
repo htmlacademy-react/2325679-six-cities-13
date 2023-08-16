@@ -54,7 +54,7 @@ export const loginAction = createAsyncThunk<void, Partial<AuthData>, {
       if (!isCheckAuth) {
         dispatch(redirectToRoute(AppRoute.Main));
       }
-    } catch (error) {
+    } catch (_) {
       //смотрите обработку в функции processErrorHandle
     }
   },

@@ -9,6 +9,11 @@ function Auth(): JSX.Element {
   const userData = useAppSelector((state) => state.userData);
   const dispatch = useAppDispatch();
 
+  const handleLogout = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    dispatch(logoutAction());
+  };
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
@@ -21,25 +26,24 @@ function Auth(): JSX.Element {
         {authorizationStatusAuth &&
           <>
             <li className="header__nav-item user">
-              <a
+              <Link
                 className="header__nav-link header__nav-link--profile"
-                href="#"
+                to={AppRoute.Favorites}
               >
-                <div className="header__avatar-wrapper user__avatar-wrapper"><img src={userData.avatarUrl} alt={userData.email} /></div>
-                <Link className="header__user-name user__name" to={AppRoute.Favorites}>
+                <div className="header__avatar-wrapper user__avatar-wrapper">
+                  <img src={userData.avatarUrl} alt={userData.email} />
+                </div>
+                <div className="header__user-name user__name">
                   {userData.email}
-                </Link>
+                </div>
                 <span className="header__favorite-count">3</span>
-              </a>
+              </Link>
             </li>
             <li className="header__nav-item">
               <Link
                 className="header__nav-link"
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  dispatch(logoutAction());
-                }}
-                to='/'
+                onClick={handleLogout}
+                to={AppRoute.Main}
               >
                 <span className="header__signout">Sign out</span>
               </Link>

@@ -1,13 +1,13 @@
 import leaflet, { Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Offer } from '../../types/offer';
+import { Offer, OfferData } from '../../types/offer';
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../constants';
 
 type MapProps = {
   location?: string;
-  offers: Offer[];
+  offers: (OfferData | Offer)[];
   layout: string;
   selectedOfferId: string;
 }

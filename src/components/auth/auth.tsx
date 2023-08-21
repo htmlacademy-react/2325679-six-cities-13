@@ -2,6 +2,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { logoutAction } from '../../store/api-actions';
 import { Link } from 'react-router-dom';
+import { MouseEventHandler } from 'react';
 
 function Auth(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -9,7 +10,7 @@ function Auth(): JSX.Element {
   const userData = useAppSelector((state) => state.userData);
   const dispatch = useAppDispatch();
 
-  const handleLogout = (event: { preventDefault: () => void }) => {
+  const handleLogout: MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.preventDefault();
     dispatch(logoutAction());
   };

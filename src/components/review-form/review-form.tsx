@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { FormEventHandler } from 'react';
 import { ChangeEvent, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
+import {postNewCommentAction} from '../../store/api-actions';
 
 const ratingData = [
   { value: 5, title: 'perfect' },
@@ -9,7 +11,13 @@ const ratingData = [
   { value: 1, title: 'terribly' }
 ];
 
-function ReviewForm(): JSX.Element {
+type ReviewFormProps = {
+  id: string;
+};
+
+function ReviewForm({id} : ReviewFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const [review, setUserReview] = useState({
     rating: 0,
     comment: ''
@@ -31,10 +39,33 @@ function ReviewForm(): JSX.Element {
     });
   };
 
-  const canSubmit = review.comment.length > 50 && review.rating > 0;
+  let canSubmit = review.comment.length > 50 && review.rating > 0;
+  let disabledTextArea = review.comment.length >= 300;
+  let disabledInput = false;
+
+  const handleReviewFormSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    try{
+      dispatch(postNewCommentAction({
+        clickedOfferId: id,
+        rating: review.rating,
+        comment: review.comment
+      }));
+      canSubmit = false;
+      disabledTextArea = true;
+      disabledInput = true;
+      setUserReview({
+        rating: 0,
+        comment: ''
+      });
+      event.currentTarget.reset();
+    } catch(_) {
+      //смотрите обработку в функции processErrorHandle
+    }
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" method="post" onSubmit={handleReviewFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -48,6 +79,7 @@ function ReviewForm(): JSX.Element {
               id={`${rating.value}-stars`}
               type="radio"
               onChange={handleRatingChange}
+              disabled={disabledInput}
             />
             <label
               htmlFor={`${rating.value}-stars`}
@@ -67,6 +99,7 @@ function ReviewForm(): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={''}
+        disabled={disabledTextArea}
         onChange={handleCommentChange}
       />
       <div className="reviews__button-wrapper">

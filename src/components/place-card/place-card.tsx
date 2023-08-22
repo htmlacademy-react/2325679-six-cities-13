@@ -10,6 +10,7 @@ type PlaceCardProps = {
 }
 
 function PlaceCard({ offer, onMouseEvent, layout }: PlaceCardProps): JSX.Element {
+
   const handleMouseEnter: MouseEventHandler<HTMLElement> = () => {
     onMouseEvent(offer.id);
   };
@@ -17,6 +18,7 @@ function PlaceCard({ offer, onMouseEvent, layout }: PlaceCardProps): JSX.Element
   const handleMouseLeave: MouseEventHandler<HTMLElement> = () => {
     onMouseEvent('');
   };
+
 
   const isOfferLayout = layout === 'offers';
   const articleClassName = isOfferLayout ? 'near-places__card' : 'cities__card';

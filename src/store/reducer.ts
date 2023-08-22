@@ -1,10 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, getOffers, loadOffers, selectOffer, sortOffers, setError, setOffersDataLoadingStatus, requireAuthorization, setUserData } from './action';
+import { changeCity, getOffers, loadOffers, selectOffer, sortOffers, setError, setOffersDataLoadingStatus, requireAuthorization, setUserData, getOfferData, getOffersNearby, setErrorOfferData, getOfferReviews, postNewComment } from './action';
 import { CITIES, DEFAULT_SORTING_TYPE, AuthorizationStatus } from '../constants';
-import { Offer } from '../types/offer';
+import { Offer, OfferData } from '../types/offer';
 import { sortPriceUp, sortPriceDown, sortRate } from '../utils';
 import { SortingType } from '../types/sorting';
 import { UserData } from '../types/user-data';
+import { Nullable } from 'vitest';
+import { Review } from '../types/review';
 
 type InitialState = {
   city: string;
@@ -12,10 +14,15 @@ type InitialState = {
   offersByCity: Offer[];
   selectedOfferId: string;
   currentSortingType: SortingType;
-  error: string | null;
+  error: Nullable<string>;
   isOffersDataLoading: boolean;
   authorizationStatus: string;
   userData: UserData;
+  clickedOfferId: string;
+  offerData: OfferData;
+  offersNearby: Offer[];
+  errorOfferData: boolean;
+  offerReviews: Review[];
 };
 
 const initialState : InitialState = {
@@ -28,6 +35,11 @@ const initialState : InitialState = {
   isOffersDataLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   userData: {} as UserData,
+  clickedOfferId: '',
+  offerData: {} as OfferData,
+  offersNearby: [],
+  errorOfferData: false,
+  offerReviews: []
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -74,6 +86,21 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setUserData, (state, action) => {
       state.userData = action.payload;
+    })
+    .addCase(getOfferData, (state, action) => {
+      state.offerData = action.payload;
+    })
+    .addCase(getOffersNearby, (state, action) => {
+      state.offersNearby = action.payload;
+    })
+    .addCase(getOfferReviews, (state, action) => {
+      state.offerReviews = action.payload;
+    })
+    .addCase(setErrorOfferData, (state, action) => {
+      state.errorOfferData = action.payload;
+    })
+    .addCase(postNewComment, (state, action) => {
+      state.offerReviews.push(action.payload);
     });
 });
 

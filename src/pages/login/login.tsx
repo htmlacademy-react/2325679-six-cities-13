@@ -10,7 +10,7 @@ function LoginPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const handleSubmit : FormEventHandler<HTMLFormElement> = (event: { preventDefault: () => void }) => {
+  const handleSubmit : FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
     if (loginRef.current && passwordRef.current) {

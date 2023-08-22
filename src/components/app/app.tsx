@@ -6,29 +6,33 @@ import FavoritesPage from '../../pages/favorites/favorites';
 import OfferPage from '../../pages/offer/offer';
 import Page404 from '../../pages/404/404';
 import PrivateRoute from '../private-route/private-route';
-import { Review } from '../../types/review';
 import {useAppSelector} from '../../hooks';
 import Loader from '../loader/loader';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {useAppDispatch} from '../../hooks';
-import { loginAction } from '../../store/api-actions';
+import { fetchOfferAction, loginAction } from '../../store/api-actions';
 import { getToken } from '../../services/token';
+import { useEffect } from 'react';
 
-type AppScreenProps = {
-  reviews: Review[];
-}
-
-function App({ reviews }: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const offers = useAppSelector((state) => state.offers);
   const token = getToken();
 
-  if (authorizationStatus === AuthorizationStatus.Unknown && token) {
-    dispatch(loginAction({}));
-  }
+  useEffect(() => {
+    if (offers.length === 0) {
+      dispatch(fetchOfferAction());
+    }
+
+    if (authorizationStatus === AuthorizationStatus.Unknown && token) {
+      dispatch(loginAction({}));
+    }
+  }, []);
+
 
   if (isOffersDataLoading) {
     return (
@@ -50,8 +54,8 @@ function App({ reviews }: AppScreenProps): JSX.Element {
             </PrivateRoute>
           }
         />
-        <Route path={AppRoute.Offer} element={<OfferPage reviews={reviews} />}>
-          <Route path=':id' element={<OfferPage reviews={reviews} />} />
+        <Route path={AppRoute.Offer} element={<OfferPage />}>
+          <Route path=':id' element={<OfferPage />} />
         </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>

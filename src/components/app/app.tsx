@@ -13,6 +13,7 @@ import browserHistory from '../../browser-history';
 import {useAppDispatch} from '../../hooks';
 import { fetchOfferAction, loginAction } from '../../store/api-actions';
 import { getToken } from '../../services/token';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -22,13 +23,16 @@ function App(): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
   const token = getToken();
 
-  if (offers.length === 0) {
-    dispatch(fetchOfferAction());
-  }
+  useEffect(() => {
+    if (offers.length === 0) {
+      dispatch(fetchOfferAction());
+    }
 
-  if (authorizationStatus === AuthorizationStatus.Unknown && token) {
-    dispatch(loginAction({}));
-  }
+    if (authorizationStatus === AuthorizationStatus.Unknown && token) {
+      dispatch(loginAction({}));
+    }
+  }, []);
+
 
   if (isOffersDataLoading) {
     return (

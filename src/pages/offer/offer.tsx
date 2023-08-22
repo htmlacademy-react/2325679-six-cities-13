@@ -10,6 +10,7 @@ import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction } from '../../store/api-actions';
 import { setOffersDataLoadingStatus } from '../../store/action';
 import { AuthorizationStatus } from '../../constants';
+import { useEffect } from 'react';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
@@ -17,23 +18,23 @@ function OfferPage(): JSX.Element {
   const selectedOfferId = useAppSelector((store) => store.selectedOfferId);
   const currentOfferData = useAppSelector((store) => store.offerData);
   const neighbourOffers = useAppSelector((store) => store.offersNearby).slice(0, 3);
-  //const errorOfferData = useAppSelector((store) => store.errorOfferData);
+  const errorOfferData = useAppSelector((store) => store.errorOfferData);
   const offersNearbyForMap = [...neighbourOffers, currentOfferData];
   const offerReviews = useAppSelector((store) => store.offerReviews);
   const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
 
-  if (!id) {
-    return <Page404 />;
-  }
+  useEffect(() => {
+    const needToGetData = currentOfferData.id !== id || Object.keys(currentOfferData).length === 0;
 
-  if (Object.keys(currentOfferData).length === 0) {
-    dispatch(setOffersDataLoadingStatus(true));
-    dispatch(getOfferDataAction(id));
-    dispatch(getOffersNearbyAction(id));
-    dispatch(getOfferReviewsAction(id));
-  }
+    if (needToGetData && id && !errorOfferData) {
+      dispatch(setOffersDataLoadingStatus(true));
+      dispatch(getOfferDataAction(id));
+      dispatch(getOffersNearbyAction(id));
+      dispatch(getOfferReviewsAction(id));
+    }
+  }, [currentOfferData, id, errorOfferData]);
 
-  if (Object.keys(currentOfferData).length === 0) {
+  if (Object.keys(currentOfferData).length === 0 || !id) {
     return <Page404 />;
   }
 
@@ -66,10 +67,10 @@ function OfferPage(): JSX.Element {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOfferData.isPremium ?
+              {currentOfferData.isPremium &&
                 <div className="offer__mark">
                   <span>Premium</span>
-                </div> : ''}
+                </div>}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
                   {currentOfferData.title}

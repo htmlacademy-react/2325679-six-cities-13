@@ -2,7 +2,6 @@ import Logo from '../../components/logo/logo';
 import {useRef, FormEventHandler} from 'react';
 import {useAppDispatch} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
-import { processErrorHandle } from '../../services/process-error-handle';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -14,7 +13,7 @@ function LoginPage(): JSX.Element {
     event.preventDefault();
 
     if (loginRef.current && passwordRef.current) {
-      if (loginRef.current?.value === '' || passwordRef.current?.value === '') {
+    /*       if (loginRef.current?.value === '' || passwordRef.current?.value === '') {
         processErrorHandle('Empty login and password');
         return;
       }
@@ -22,7 +21,7 @@ function LoginPage(): JSX.Element {
       if (passwordRef.current?.value.trim() === '') {
         processErrorHandle('Password must contain at least five letters but not spaces');
         return;
-      }
+      } */
 
       dispatch(loginAction({
         email: loginRef.current.value,

@@ -9,6 +9,7 @@ function ReviewItem({ review }: ReviewListProps): JSX.Element {
   const reviewDateMonth = reviewDate.toLocaleString('default', { month: 'long' });
   const formedReviewDateMonth = reviewDateMonth.slice(0,1).toUpperCase() + reviewDateMonth.slice(1);
   const reviewDateYear = reviewDate.getFullYear();
+
   return (
     <li className="reviews__item">
       <div className="reviews__user user">

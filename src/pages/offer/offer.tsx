@@ -8,31 +8,34 @@ import Page404 from '../404/404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction } from '../../store/api-actions';
-import { setOffersDataLoadingStatus } from '../../store/action';
 import { AuthorizationStatus } from '../../constants';
 import { useEffect } from 'react';
+import { getSelectedOfferId } from '../../store/user-process/user-process.selectors';
+import { getErrorOfferData, getOfferReviews, getOffersData, getOffersNearby } from '../../store/offers-data/offers-data.selectors';
+import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const selectedOfferId = useAppSelector((store) => store.selectedOfferId);
-  const currentOfferData = useAppSelector((store) => store.offerData);
-  const neighbourOffers = useAppSelector((store) => store.offersNearby).slice(0, 3);
-  const errorOfferData = useAppSelector((store) => store.errorOfferData);
+  const selectedOfferId = useAppSelector(getSelectedOfferId);
+  const currentOfferData = useAppSelector(getOffersData);
+  const currentOfferDataImages = currentOfferData.images;
+  const neighbourOffers = useAppSelector(getOffersNearby).slice(0, 3);
+  const errorOfferData = useAppSelector(getErrorOfferData);
   const offersNearbyForMap = [...neighbourOffers, currentOfferData];
-  const offerReviews = useAppSelector((store) => store.offerReviews);
-  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+  const offerReviews = useAppSelector(getOfferReviews);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     const needToGetData = currentOfferData.id !== id || Object.keys(currentOfferData).length === 0;
 
     if (needToGetData && id && !errorOfferData) {
-      dispatch(setOffersDataLoadingStatus(true));
       dispatch(getOfferDataAction(id));
       dispatch(getOffersNearbyAction(id));
       dispatch(getOfferReviewsAction(id));
     }
-  }, [currentOfferData, id, errorOfferData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   if (Object.keys(currentOfferData).length === 0 || !id) {
     return <Page404 />;
@@ -54,7 +57,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOfferData.images.map((img) => (
+              {currentOfferDataImages.map((img) => (
                 <div className="offer__image-wrapper" key={img}>
                   <img
                     className="offer__image"

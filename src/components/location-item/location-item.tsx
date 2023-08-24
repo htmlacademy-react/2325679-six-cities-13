@@ -1,5 +1,6 @@
 import { Cities } from '../../types/location';
 import { useAppSelector } from '../../hooks';
+import { getLocation } from '../../store/offers-data/offers-data.selectors';
 
 type LocationItemProps = {
   city: string;
@@ -7,7 +8,7 @@ type LocationItemProps = {
 }
 
 function LocationItem({ city, onMouseClick }: LocationItemProps): JSX.Element {
-  const currentCity = useAppSelector((store) => store.city);
+  const currentCity = useAppSelector(getLocation);
 
   const handleMouseClick = () => {
     onMouseClick(city as Cities);

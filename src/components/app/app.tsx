@@ -14,13 +14,15 @@ import {useAppDispatch} from '../../hooks';
 import { fetchOfferAction, loginAction } from '../../store/api-actions';
 import { getToken } from '../../services/token';
 import { useEffect } from 'react';
+import { getOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
+import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const offers = useAppSelector((state) => state.offers);
+  const isOffersDataLoading = useAppSelector(getStatusLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offers = useAppSelector(getOffers);
   const token = getToken();
 
   useEffect(() => {
@@ -31,6 +33,7 @@ function App(): JSX.Element {
     if (authorizationStatus === AuthorizationStatus.Unknown && token) {
       dispatch(loginAction({}));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

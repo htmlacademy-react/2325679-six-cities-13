@@ -1,16 +1,18 @@
 import LocationItem from '../location-item/location-item';
 import { CITIES } from '../../constants';
 import { useAppDispatch } from '../../hooks/index';
-import { changeCity, getOffers } from '../../store/action';
+import { changeCity, getOffers } from '../../store/offers-data/offers-data.slice';
 import { Cities } from '../../types/location';
+import { useCallback } from 'react';
 
 function LocationsList(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const handleLocation = (city: Cities) => {
+  const handleLocation = useCallback((city: Cities) => {
     dispatch(changeCity({ city }));
     dispatch(getOffers());
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="locations container">

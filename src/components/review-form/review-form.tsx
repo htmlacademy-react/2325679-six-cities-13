@@ -1,7 +1,8 @@
 import React, { FormEventHandler } from 'react';
 import { ChangeEvent, useState } from 'react';
-import { useAppDispatch } from '../../hooks';
-import {postNewCommentAction} from '../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postNewCommentAction } from '../../store/api-actions';
+import { getErrorOfferReview } from '../../store/offers-data/offers-data.selectors';
 
 const ratingData = [
   { value: 5, title: 'perfect' },
@@ -15,8 +16,9 @@ type ReviewFormProps = {
   id: string;
 };
 
-function ReviewForm({id} : ReviewFormProps): JSX.Element {
+function ReviewForm({ id }: ReviewFormProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const errorOfferReview = useAppSelector(getErrorOfferReview);
 
   const [review, setUserReview] = useState({
     rating: 0,
@@ -45,22 +47,20 @@ function ReviewForm({id} : ReviewFormProps): JSX.Element {
 
   const handleReviewFormSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    try{
-      dispatch(postNewCommentAction({
-        clickedOfferId: id,
-        rating: review.rating,
-        comment: review.comment
-      }));
-      canSubmit = false;
-      disabledTextArea = true;
-      disabledInput = true;
+    dispatch(postNewCommentAction({
+      offerId: id,
+      rating: review.rating,
+      comment: review.comment
+    }));
+    canSubmit = false;
+    disabledTextArea = true;
+    disabledInput = true;
+    if (!errorOfferReview) {
       setUserReview({
         rating: 0,
         comment: ''
       });
       event.currentTarget.reset();
-    } catch(_) {
-      //смотрите обработку в функции processErrorHandle
     }
   };
 

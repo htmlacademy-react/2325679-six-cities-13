@@ -2,14 +2,14 @@ import { MouseEventHandler, useState } from 'react';
 import { SORT_OPTIONS } from '../../constants';
 import { useAppSelector } from '../../hooks';
 import { useAppDispatch } from '../../hooks/index';
-import { sortOffers } from '../../store/action';
+import { sortOffers } from '../../store/offers-data/offers-data.slice';
 import { SortingType } from '../../types/sorting';
-import { State } from '../../types/state';
+import { getSortingType } from '../../store/offers-data/offers-data.selectors';
 
 function Sorting(): JSX.Element {
   const dispatch = useAppDispatch();
   const [isShow, setClickSort] = useState(false);
-  const selectedSortingType = useAppSelector((store: State) => store.currentSortingType);
+  const selectedSortingType = useAppSelector(getSortingType);
 
   const handleSortClick: MouseEventHandler<HTMLSpanElement> = () => {
     setClickSort(!isShow);

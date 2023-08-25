@@ -1,11 +1,12 @@
 import Auth from '../../components/auth/auth';
 import Logo from '../../components/logo/logo';
 import { useAppSelector } from '../../hooks';
+import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { Offer } from '../../types/offer';
 import FavoritesEmptyPage from '../favorites-empty/favorites-empty';
 
 function FavoritesPage(): JSX.Element {
-  const offers: Offer[] = useAppSelector((store) => store.offersByCity);
+  const offers: Offer[] = useAppSelector(getOffers);
 
   if (offers.length === 0) {
     return (

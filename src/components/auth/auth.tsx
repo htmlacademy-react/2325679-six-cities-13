@@ -2,18 +2,20 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { logoutAction } from '../../store/api-actions';
 import { Link } from 'react-router-dom';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useCallback } from 'react';
+import { getAuthorizationStatus, getUserData } from '../../store/auth-process/auth-process.selectors';
 
 function Auth(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const authorizationStatusAuth = authorizationStatus === AuthorizationStatus.Auth;
-  const userData = useAppSelector((state) => state.userData);
+  const userData = useAppSelector(getUserData);
   const dispatch = useAppDispatch();
 
-  const handleLogout: MouseEventHandler<HTMLAnchorElement> = (event) => {
+  const handleLogout: MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     dispatch(logoutAction());
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <nav className="header__nav">

@@ -1,7 +1,7 @@
 import { Offer } from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
 import { useAppDispatch } from '../../hooks/index';
-import { selectOffer } from '../../store/action';
+import { selectOffer } from '../../store/map/map.slice';
 
 type PlaceCardListProps = {
   offers: Offer[];
@@ -12,7 +12,7 @@ type PlaceCardListProps = {
 function PlaceCardList({ offers, layout, count }: PlaceCardListProps): JSX.Element | null{
   const dispatch = useAppDispatch();
 
-  const handleselectedOffer = (id: string) => {
+  const handleSelectedOffer = (id: string) => {
     dispatch(selectOffer({id}));
   };
 
@@ -28,7 +28,11 @@ function PlaceCardList({ offers, layout, count }: PlaceCardListProps): JSX.Eleme
     (
       <div className={`${isOfferLayout ? 'near-places__list' : 'cities__places-list'} places__list tabs__content`}>
         {offers.slice(0, count).map((offer) => (
-          <PlaceCard key={offer.id} offer={offer} onMouseEvent={handleselectedOffer} layout={`${isOfferLayout ? 'offers' : 'main'}`} />
+          <PlaceCard key={offer.id}
+            offer={offer}
+            onMouseEvent={handleSelectedOffer}
+            layout={`${isOfferLayout ? 'offers' : 'main'}`}
+          />
         ))}
       </div>
     )

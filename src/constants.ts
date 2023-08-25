@@ -42,8 +42,8 @@ export enum APIRoute {
   Logout = '/logout'
 }
 
-export enum NameSpace {
-  UserProcess = 'UserProcess',
+export enum SliceNames {
+  Map = 'Map',
   Data = 'Data',
   Auth = 'Auth'
 }

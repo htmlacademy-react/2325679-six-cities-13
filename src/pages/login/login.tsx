@@ -13,16 +13,6 @@ function LoginPage(): JSX.Element {
     event.preventDefault();
 
     if (loginRef.current && passwordRef.current) {
-    /*       if (loginRef.current?.value === '' || passwordRef.current?.value === '') {
-        processErrorHandle('Empty login and password');
-        return;
-      }
-
-      if (passwordRef.current?.value.trim() === '') {
-        processErrorHandle('Password must contain at least five letters but not spaces');
-        return;
-      } */
-
       dispatch(loginAction({
         email: loginRef.current.value,
         password: passwordRef.current.value

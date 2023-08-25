@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { CITIES, DEFAULT_SORTING_TYPE, NameSpace } from '../../constants';
+import { CITIES, DEFAULT_SORTING_TYPE, SliceNames } from '../../constants';
 import { fetchOfferAction, getOfferDataAction, getOfferReviewsAction, getOffersNearbyAction, postNewCommentAction } from '../api-actions';
 import { OffersData } from '../../types/state';
 import { OfferData } from '../../types/offer';
@@ -12,15 +12,15 @@ const initialState: OffersData = {
   offers: [],
   offersByCity: [],
   offerData: {} as OfferData,
-  isOffersDataLoading: false,
   errorOfferData: false,
-  errorOfferReview: false,
+  isOffersDataLoading: true,
+  isCommentSending: false,
   offersNearby: [],
   offerReviews: [],
 };
 
 export const offersData = createSlice({
-  name: NameSpace.Data,
+  name: SliceNames.Data,
   initialState,
   reducers: {
     changeCity: (state, action: PayloadAction<{ city: string }>) => {
@@ -46,7 +46,7 @@ export const offersData = createSlice({
     },
     setErrorOffer: (state) => {
       state.errorOfferData = false;
-    },
+    }
   },
   extraReducers(builder) {
     builder
@@ -87,14 +87,14 @@ export const offersData = createSlice({
         state.errorOfferData = false;
       })
       .addCase(postNewCommentAction.pending, (state) => {
-        state.errorOfferReview = false;
+        state.isCommentSending = true;
       })
       .addCase(postNewCommentAction.fulfilled, (state, action) => {
-        state.errorOfferReview = false;
+        state.isCommentSending = false;
         state.offerReviews.push(action.payload);
       })
       .addCase(postNewCommentAction.rejected, (state) => {
-        state.errorOfferReview = true;
+        state.isCommentSending = false;
       });
   }
 });

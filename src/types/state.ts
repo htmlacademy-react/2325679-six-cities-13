@@ -15,14 +15,14 @@ export type OffersData = {
   offers: Offer[];
   offersByCity: Offer[];
   offerData: OfferData;
-  isOffersDataLoading: boolean;
   errorOfferData: boolean;
-  errorOfferReview: boolean;
+  isOffersDataLoading: boolean;
+  isCommentSending: boolean;
   offersNearby: Offer[];
   offerReviews: Review[];
 }
 
-export type UserProcess = {
+export type MapType = {
   selectedOfferId: string;
 }
 

@@ -10,7 +10,7 @@ import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction } from '../../store/api-actions';
 import { AuthorizationStatus } from '../../constants';
 import { useEffect } from 'react';
-import { getSelectedOfferId } from '../../store/user-process/user-process.selectors';
+import { getSelectedOfferId } from '../../store/map/map.selectors';
 import { getErrorOfferData, getOfferReviews, getOffersData, getOffersNearby } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 

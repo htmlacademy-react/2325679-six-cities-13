@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../constants';
-import { UserProcess } from '../../types/state';
+import { SliceNames } from '../../constants';
+import { MapType } from '../../types/state';
 
-const initialState: UserProcess = {
+const initialState: MapType = {
   selectedOfferId: ''
 };
 
-export const userProcess = createSlice({
-  name: NameSpace.UserProcess,
+export const Map = createSlice({
+  name: SliceNames.Map,
   initialState,
   reducers: {
     selectOffer: (state, action: PayloadAction<{ id: string }>) => {
@@ -17,4 +17,4 @@ export const userProcess = createSlice({
   },
 });
 
-export const {selectOffer} = userProcess.actions;
+export const {selectOffer} = Map.actions;

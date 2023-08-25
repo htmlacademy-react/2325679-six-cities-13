@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import { useAppDispatch } from '../../hooks';
 import { setErrorOffer } from '../../store/offers-data/offers-data.slice';
+import { AppRoute } from '../../constants';
 
 function Page404(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -26,9 +27,7 @@ function Page404(): JSX.Element {
             <div className="cities__status-wrapper tabs__content">
               <b className="cities__status">404 page not found</b>
               <p className="cities__status-description">We could not find such a page<br /><br /></p>
-              <button className="login__submit form__submit button" type="submit" onClick={handleLinkClick}>
-                <Link to="/">На главную страницу</Link>
-              </button>
+              <Link to={AppRoute.Main} className="login__submit form__submit button" type="button" onClick={handleLinkClick}>На главную страницу</Link>
             </div>
           </section>
           <section className="locations locations--login locations--current">

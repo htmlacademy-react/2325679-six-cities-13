@@ -7,7 +7,7 @@ import NoOffers from '../../components/no-offers/no-offers';
 import Sorting from '../../components/sorting/sorting';
 import Auth from '../../components/auth/auth';
 import { getLocation, getOffers } from '../../store/offers-data/offers-data.selectors';
-import { getSelectedOfferId } from '../../store/user-process/user-process.selectors';
+import { getSelectedOfferId } from '../../store/map/map.selectors';
 
 function MainPage(): JSX.Element {
   const offers = useAppSelector(getOffers);

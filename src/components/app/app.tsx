@@ -11,7 +11,7 @@ import Loader from '../loader/loader';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {useAppDispatch} from '../../hooks';
-import { fetchOfferAction, loginAction } from '../../store/api-actions';
+import { fetchOfferAction, getFavoriteOffersAction, loginAction } from '../../store/api-actions';
 import { getToken } from '../../services/token';
 import { useEffect } from 'react';
 import { getOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
@@ -33,9 +33,11 @@ function App(): JSX.Element {
     if (authorizationStatus === AuthorizationStatus.Unknown && token) {
       dispatch(loginAction({}));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
+    if (authorizationStatus === AuthorizationStatus.Auth && token) {
+      dispatch(getFavoriteOffersAction());
+    }
+  }, [authorizationStatus, dispatch, offers, token]);
 
   if (isOffersDataLoading) {
     return (
@@ -48,7 +50,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path={AppRoute.Main} element={<MainPage />} />
         <Route path={AppRoute.Login} element={<LoginPage />} />
-        <Route path={AppRoute.Favorites}
+        <Route path={AppRoute.Favorite}
           element={
             <PrivateRoute
               authorizationStatus={authorizationStatus}

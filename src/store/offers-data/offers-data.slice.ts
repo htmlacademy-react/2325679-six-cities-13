@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { CITIES, DEFAULT_SORTING_TYPE, SliceNames } from '../../constants';
-import { fetchOfferAction, getOfferDataAction, getOfferReviewsAction, getOffersNearbyAction, postNewCommentAction } from '../api-actions';
+import { favoritesOfferAction, fetchOfferAction, getFavoriteOffersAction, getOfferDataAction, getOfferReviewsAction, getOffersNearbyAction, postNewCommentAction } from '../api-actions';
 import { OffersData } from '../../types/state';
 import { OfferData } from '../../types/offer';
 import { SortingType } from '../../types/sorting';
@@ -17,6 +17,7 @@ const initialState: OffersData = {
   isCommentSending: false,
   offersNearby: [],
   offerReviews: [],
+  favoriteOffers: []
 };
 
 export const offersData = createSlice({
@@ -46,6 +47,9 @@ export const offersData = createSlice({
     },
     setErrorOffer: (state) => {
       state.errorOfferData = false;
+    },
+    setFavortiteOffers: (state) => {
+      state.offersByCity.map((offer) => offer.isFavorite === false);
     }
   },
   extraReducers(builder) {
@@ -95,8 +99,29 @@ export const offersData = createSlice({
       })
       .addCase(postNewCommentAction.rejected, (state) => {
         state.isCommentSending = false;
+      })
+      .addCase(getFavoriteOffersAction.fulfilled, (state, action) => {
+        state.favoriteOffers = action.payload;
+      })
+      .addCase(favoritesOfferAction.fulfilled, (state, action) => {
+        if (action.meta.arg.status === 1) {
+          state.favoriteOffers.push(action.payload);
+          state.offersByCity.map((offer) => {
+            if (offer.id === action.payload.id) {
+              offer.isFavorite = true;
+            }
+          });
+        } else {
+          state.offersByCity.map((offer) => {
+            if (offer.id === action.payload.id) {
+              offer.isFavorite = false;
+            }
+          });
+          const index = state.favoriteOffers.findIndex((offer) => offer.id === action.payload.id);
+          state.favoriteOffers.splice(index, 1);
+        }
       });
   }
 });
 
-export const { changeCity, getOffers, sortOffers, setErrorOffer } = offersData.actions;
+export const { changeCity, getOffers, sortOffers, setErrorOffer, setFavortiteOffers } = offersData.actions;

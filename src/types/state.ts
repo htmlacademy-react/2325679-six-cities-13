@@ -1,5 +1,5 @@
-import {store} from '../store/index';
-import { Offer, OfferData } from './offer';
+import { store } from '../store/index';
+import { FavoriteOffer, Offer, OfferData } from './offer';
 import { Review } from './review';
 import { SortingType } from './sorting';
 import { UserData } from './user-data';
@@ -20,6 +20,7 @@ export type OffersData = {
   isCommentSending: boolean;
   offersNearby: Offer[];
   offerReviews: Review[];
+  favoriteOffers: (Offer | FavoriteOffer)[];
 }
 
 export type MapType = {

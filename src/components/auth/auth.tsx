@@ -4,18 +4,19 @@ import { logoutAction } from '../../store/api-actions';
 import { Link } from 'react-router-dom';
 import { MouseEventHandler, useCallback } from 'react';
 import { getAuthorizationStatus, getUserData } from '../../store/auth-process/auth-process.selectors';
+import { getFavoritesOffers } from '../../store/offers-data/offers-data.selectors';
 
 function Auth(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const authorizationStatusAuth = authorizationStatus === AuthorizationStatus.Auth;
   const userData = useAppSelector(getUserData);
+  const favoritesOffers = useAppSelector(getFavoritesOffers);
   const dispatch = useAppDispatch();
 
   const handleLogout: MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     dispatch(logoutAction());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <nav className="header__nav">
@@ -31,7 +32,7 @@ function Auth(): JSX.Element {
             <li className="header__nav-item user">
               <Link
                 className="header__nav-link header__nav-link--profile"
-                to={AppRoute.Favorites}
+                to={AppRoute.Favorite}
               >
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                   <img src={userData.avatarUrl} alt={userData.email} />
@@ -39,7 +40,7 @@ function Auth(): JSX.Element {
                 <div className="header__user-name user__name">
                   {userData.email}
                 </div>
-                <span className="header__favorite-count">3</span>
+                <span className="header__favorite-count">{favoritesOffers.length}</span>
               </Link>
             </li>
             <li className="header__nav-item">

@@ -11,6 +11,6 @@ export const getOffersData = (state: State): OfferData => state[SliceNames.Data]
 export const getOffersNearby = (state: State): Offer[] => state[SliceNames.Data].offersNearby;
 export const getErrorOfferData = (state: State): boolean => state[SliceNames.Data].errorOfferData;
 export const getStatusSendingComment = (state: State): boolean => state[SliceNames.Data].isCommentSending;
-//export const getSuccessfulSendedComment = (state: State): boolean => state[SliceNames.Data].isCommentSendedSuccesful;
 export const getOfferReviews = (state: State): Review[] => state[SliceNames.Data].offerReviews;
 export const getSortingType = (state: State): SortingType => state[SliceNames.Data].currentSortingType;
+export const getFavoritesOffers = (state: State): (Offer)[] => state[SliceNames.Data].favoriteOffers;

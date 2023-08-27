@@ -1,18 +1,27 @@
+import { MouseEventHandler } from 'react';
 import Auth from '../../components/auth/auth';
 import Logo from '../../components/logo/logo';
-import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/offers-data/offers-data.selectors';
-import { Offer } from '../../types/offer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { favoritesOfferAction } from '../../store/api-actions';
+import { getFavoritesOffers } from '../../store/offers-data/offers-data.selectors';
 import FavoritesEmptyPage from '../favorites-empty/favorites-empty';
 
 function FavoritesPage(): JSX.Element {
-  const offers: Offer[] = useAppSelector(getOffers);
+  const dispatch = useAppDispatch();
+  const favoritesOffers = useAppSelector(getFavoritesOffers);
 
-  if (offers.length === 0) {
+  if (favoritesOffers.length === 0) {
     return (
       <FavoritesEmptyPage />
     );
   }
+
+  const handleButtonClick : MouseEventHandler<HTMLButtonElement> = (event) => {
+    dispatch(favoritesOfferAction({
+      offerId: event.currentTarget.id,
+      status: 0
+    }));
+  };
 
   return (
     <div className="page">
@@ -31,7 +40,7 @@ function FavoritesPage(): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {offers.map((offer) => (
+              {favoritesOffers.map((offer) => (
                 <li className="favorites__locations-items" key={offer.id}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
@@ -68,6 +77,8 @@ function FavoritesPage(): JSX.Element {
                           <button
                             className={offer.isFavorite ? 'place-card__bookmark-button place-card__bookmark-button--active button' : 'place-card__bookmark-button button'}
                             type="button"
+                            id = {offer.id}
+                            onClick={handleButtonClick}
                           >
                             <svg
                               className="place-card__bookmark-icon"

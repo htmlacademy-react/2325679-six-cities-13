@@ -25,13 +25,6 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
     comment: ''
   });
 
-  /*   useEffect(() => {
-    if (isCommentSendedSuccesful) {
-      console.log(isCommentSendedSuccesful, 'useEffect');
-      dispatch(switchIsCommentSended());
-    }
-  }, [isCommentSendedSuccesful]); */
-
   const handleRatingChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const value = Number(target.value);
     setUserReview({

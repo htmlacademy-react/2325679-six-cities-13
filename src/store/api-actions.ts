@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
 import { APIRoute, AppRoute } from '../constants.js';
-import { Offer, OfferData, Offers } from '../types/offer.js';
+import { Favorite, FavoriteOffer, Offer, OfferData, Offers } from '../types/offer.js';
 import { redirectToRoute } from './action.js';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
@@ -18,6 +18,18 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   'checkAuth',
   async (_arg, { extra: api }) => {
     await api.get(APIRoute.Login);
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<Offers, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchOffers',
+  async (_arg, { extra: api }) => {
+    const { data } = await api.get<Offers>(APIRoute.Offers);
+    return data;
   },
 );
 
@@ -37,6 +49,7 @@ export const loginAction = createAsyncThunk<UserData, Partial<AuthData>, {
     if (!isCheckAuth) {
       dispatch(redirectToRoute(AppRoute.Main));
     }
+    dispatch(fetchOfferAction());
     return data;
   },
 );
@@ -47,21 +60,10 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'logout',
-  async (_arg, { extra: api }) => {
+  async (_arg, { dispatch, extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-  },
-);
-
-export const fetchOfferAction = createAsyncThunk<Offers, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
-  'fetchOffers',
-  async (_arg, { extra: api }) => {
-    const { data } = await api.get<Offers>(APIRoute.Offers);
-    return data;
+    dispatch(fetchOfferAction());
   },
 );
 
@@ -113,12 +115,39 @@ export const postNewCommentAction = createAsyncThunk<Review, Comment & {callback
   'postNewComment',
   async (param, { extra: api }) => {
     const { offerId, rating, comment, callback } = param;
-    const response = await api.post<Review>(`/comment/${offerId}`, { rating, comment });
+    const response = await api.post<Review>(`/comments/${offerId}`, { rating, comment });
     if (response.status === 201) {
       callback();
     }
-
     const { data } = response;
     return data;
   },
+  );
+
+
+export const getFavoriteOffersAction = createAsyncThunk<Offer[], undefined, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    'getFavoriteOffers',
+    async (_arg, { extra: api }) => {
+      const response = await api.get<Offer[]>(APIRoute.Favorite);
+      const { data } = response;
+      return data;
+    },
+  );
+
+export const favoritesOfferAction = createAsyncThunk<FavoriteOffer, Favorite, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }>(
+    'favoritesOffer',
+    async (param, { extra: api }) => {
+      const { offerId, status } = param;
+      const response = await api.post<FavoriteOffer>(`/favorite/${offerId}/${status}`, {});
+      const { data } = response;
+      return data;
+    },
   );

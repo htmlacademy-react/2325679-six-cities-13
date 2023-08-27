@@ -39,7 +39,8 @@ export const DEFAULT_SORTING_TYPE : SortingType = SORT_OPTIONS[0].type;
 export enum APIRoute {
   Offers = '/offers',
   Login = '/login',
-  Logout = '/logout'
+  Logout = '/logout',
+  Favorite = '/favorite'
 }
 
 export enum SliceNames {

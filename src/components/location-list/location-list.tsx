@@ -11,8 +11,7 @@ function LocationsList(): JSX.Element {
   const handleLocation = useCallback((city: Cities) => {
     dispatch(changeCity({ city }));
     dispatch(getOffers());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <section className="locations container">

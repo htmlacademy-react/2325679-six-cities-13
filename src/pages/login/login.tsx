@@ -1,13 +1,24 @@
 import Logo from '../../components/logo/logo';
 import {useRef, FormEventHandler} from 'react';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
+import { AppRoute, AuthorizationStatus } from '../../constants';
+import { redirectToRoute } from '../../store/action';
+import { useEffect } from 'react';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+  }, [authorizationStatus, dispatch]);
 
   const handleSubmit : FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();

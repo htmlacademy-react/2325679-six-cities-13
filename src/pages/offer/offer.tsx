@@ -7,12 +7,13 @@ import Map from '../../components/map/map';
 import Page404 from '../404/404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Auth from '../../components/auth/auth';
-import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction } from '../../store/api-actions';
-import { AuthorizationStatus } from '../../constants';
-import { useEffect } from 'react';
+import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction, favoritesOfferAction } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus } from '../../constants';
+import { useEffect, useState } from 'react';
 import { getSelectedOfferId } from '../../store/map/map.selectors';
 import { getErrorOfferData, getOfferReviews, getOffersData, getOffersNearby } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
+import { redirectToRoute } from '../../store/action';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
@@ -25,6 +26,7 @@ function OfferPage(): JSX.Element {
   const offersNearbyForMap = [...neighbourOffers, currentOfferData];
   const offerReviews = useAppSelector(getOfferReviews);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const [isFavorite, setIsFavorite] = useState(currentOfferData.isFavorite);
 
   useEffect(() => {
     const needToGetData = currentOfferData.id !== id || Object.keys(currentOfferData).length === 0;
@@ -34,12 +36,23 @@ function OfferPage(): JSX.Element {
       dispatch(getOffersNearbyAction(id));
       dispatch(getOfferReviewsAction(id));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [currentOfferData, dispatch, errorOfferData, id]);
 
   if (Object.keys(currentOfferData).length === 0 || !id) {
     return <Page404 />;
   }
+
+  const handleButtonClick = () => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(favoritesOfferAction({
+        offerId: id,
+        status: Number(!isFavorite)
+      }));
+      setIsFavorite(!isFavorite);
+    } else {
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+  };
 
   return (
     <div className="page">
@@ -78,7 +91,10 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {currentOfferData.title}
                 </h1>
-                <button className={currentOfferData.isFavorite ? 'offer__bookmark-button button offer__bookmark-button--active' : 'offer__bookmark-button button'} type="button">
+                <button className={isFavorite ? 'offer__bookmark-button button offer__bookmark-button--active' : 'offer__bookmark-button button'}
+                  type="button"
+                  onClick={handleButtonClick}
+                >
                   <svg className="offer__bookmark-icon" width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
                   </svg>

@@ -37,7 +37,7 @@ function App(): JSX.Element {
     if (authorizationStatus === AuthorizationStatus.Auth && token) {
       dispatch(getFavoriteOffersAction());
     }
-  }, [authorizationStatus, dispatch, offers, token]);
+  });
 
   if (isOffersDataLoading) {
     return (
@@ -50,7 +50,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path={AppRoute.Main} element={<MainPage />} />
         <Route path={AppRoute.Login} element={<LoginPage />} />
-        <Route path={AppRoute.Favorite}
+        <Route path={AppRoute.Favorites}
           element={
             <PrivateRoute
               authorizationStatus={authorizationStatus}

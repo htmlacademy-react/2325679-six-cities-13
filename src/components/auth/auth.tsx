@@ -32,7 +32,7 @@ function Auth(): JSX.Element {
             <li className="header__nav-item user">
               <Link
                 className="header__nav-link header__nav-link--profile"
-                to={AppRoute.Favorite}
+                to={AppRoute.Favorites}
               >
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                   <img src={userData.avatarUrl} alt={userData.email} />

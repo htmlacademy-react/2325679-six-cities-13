@@ -7,7 +7,7 @@ export const Parameters = {
 export enum AppRoute {
   Main = '/',
   Login = '/login',
-  Favorite = '/favorite',
+  Favorites = '/favorites',
   Offer = '/offer',
 }
 

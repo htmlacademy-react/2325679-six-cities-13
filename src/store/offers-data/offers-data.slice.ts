@@ -17,7 +17,8 @@ const initialState: OffersData = {
   isCommentSending: false,
   offersNearby: [],
   offerReviews: [],
-  favoriteOffers: []
+  favoriteOffers: [],
+  isFavoritesLoading: false
 };
 
 export const offersData = createSlice({
@@ -48,8 +49,8 @@ export const offersData = createSlice({
     setErrorOffer: (state) => {
       state.errorOfferData = false;
     },
-    setFavortiteOffers: (state) => {
-      state.offersByCity.map((offer) => offer.isFavorite === false);
+    clearFavortiteOffers: (state) => {
+      state.favoriteOffers = [];
     }
   },
   extraReducers(builder) {
@@ -100,8 +101,15 @@ export const offersData = createSlice({
       .addCase(postNewCommentAction.rejected, (state) => {
         state.isCommentSending = false;
       })
+      .addCase(getFavoriteOffersAction.pending, (state) => {
+        state.isFavoritesLoading = true;
+      })
       .addCase(getFavoriteOffersAction.fulfilled, (state, action) => {
         state.favoriteOffers = action.payload;
+        state.isFavoritesLoading = false;
+      })
+      .addCase(getFavoriteOffersAction.rejected, (state) => {
+        state.isFavoritesLoading = false;
       })
       .addCase(favoritesOfferAction.fulfilled, (state, action) => {
         if (action.meta.arg.status === 1) {
@@ -124,4 +132,4 @@ export const offersData = createSlice({
   }
 });
 
-export const { changeCity, getOffers, sortOffers, setErrorOffer, setFavortiteOffers } = offersData.actions;
+export const { changeCity, getOffers, sortOffers, setErrorOffer, clearFavortiteOffers } = offersData.actions;

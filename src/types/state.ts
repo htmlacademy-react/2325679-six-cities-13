@@ -21,6 +21,7 @@ export type OffersData = {
   offersNearby: Offer[];
   offerReviews: Review[];
   favoriteOffers: (Offer | FavoriteOffer)[];
+  isFavoritesLoading: boolean;
 }
 
 export type MapType = {

@@ -16,6 +16,7 @@ import { getToken } from '../../services/token';
 import { useEffect } from 'react';
 import { getOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
+import { clearFavortiteOffers } from '../../store/offers-data/offers-data.slice';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -26,18 +27,25 @@ function App(): JSX.Element {
   const token = getToken();
 
   useEffect(() => {
-    if (offers.length === 0) {
-      dispatch(fetchOfferAction());
-    }
-
     if (authorizationStatus === AuthorizationStatus.Unknown && token) {
       dispatch(loginAction({}));
+    }
+  });
+
+  useEffect(() => {
+    if (offers.length === 0) {
+      dispatch(fetchOfferAction());
     }
 
     if (authorizationStatus === AuthorizationStatus.Auth && token) {
       dispatch(getFavoriteOffersAction());
     }
-  });
+
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(clearFavortiteOffers());
+    }
+
+  }, [authorizationStatus, dispatch, offers.length, token]);
 
   if (isOffersDataLoading) {
     return (
@@ -52,9 +60,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route path={AppRoute.Favorites}
           element={
-            <PrivateRoute
-              authorizationStatus={authorizationStatus}
-            >
+            <PrivateRoute>
               <FavoritesPage />
             </PrivateRoute>
           }

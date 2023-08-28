@@ -76,6 +76,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
                 type="radio"
                 onChange={handleRatingChange}
                 disabled={isCommentSending}
+                title={rating.title}
               />
               <label
                 htmlFor={`${rating.value}-stars`}

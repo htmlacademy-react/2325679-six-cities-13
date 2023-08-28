@@ -14,3 +14,4 @@ export const getStatusSendingComment = (state: State): boolean => state[SliceNam
 export const getOfferReviews = (state: State): Review[] => state[SliceNames.Data].offerReviews;
 export const getSortingType = (state: State): SortingType => state[SliceNames.Data].currentSortingType;
 export const getFavoritesOffers = (state: State): (Offer)[] => state[SliceNames.Data].favoriteOffers;
+export const getFavoritesStatusLoading = (state: State): boolean => state[SliceNames.Data].isFavoritesLoading;

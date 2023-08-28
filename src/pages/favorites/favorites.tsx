@@ -3,12 +3,18 @@ import Auth from '../../components/auth/auth';
 import Logo from '../../components/logo/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { favoritesOfferAction } from '../../store/api-actions';
-import { getFavoritesOffers } from '../../store/offers-data/offers-data.selectors';
+import { getFavoritesOffers, getFavoritesStatusLoading } from '../../store/offers-data/offers-data.selectors';
 import FavoritesEmptyPage from '../favorites-empty/favorites-empty';
+import Loader from '../../components/loader/loader';
 
 function FavoritesPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const favoritesOffers = useAppSelector(getFavoritesOffers);
+  const isFavoritesLoading = useAppSelector(getFavoritesStatusLoading);
+
+  if (isFavoritesLoading) {
+    return <Loader />;
+  }
 
   if (favoritesOffers.length === 0) {
     return (

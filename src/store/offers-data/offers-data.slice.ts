@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { CITIES, DEFAULT_SORTING_TYPE, SliceNames } from '../../constants';
+import { CITIES, DEFAULT_SORTING_TYPE, SliceNames, StatusComment } from '../../constants';
 import { favoritesOfferAction, fetchOfferAction, getFavoriteOffersAction, getOfferDataAction, getOfferReviewsAction, getOffersNearbyAction, postNewCommentAction } from '../api-actions';
 import { OffersData } from '../../types/state';
 import { OfferData } from '../../types/offer';
@@ -14,7 +14,7 @@ const initialState: OffersData = {
   offerData: {} as OfferData,
   errorOfferData: false,
   isOffersDataLoading: true,
-  isCommentSending: false,
+  statusComment: StatusComment.Idle,
   offersNearby: [],
   offerReviews: [],
   favoriteOffers: [],
@@ -92,14 +92,14 @@ export const offersData = createSlice({
         state.errorOfferData = false;
       })
       .addCase(postNewCommentAction.pending, (state) => {
-        state.isCommentSending = true;
+        state.statusComment = StatusComment.Loading;
       })
       .addCase(postNewCommentAction.fulfilled, (state, action) => {
-        state.isCommentSending = false;
+        state.statusComment = StatusComment.Success;
         state.offerReviews.push(action.payload);
       })
       .addCase(postNewCommentAction.rejected, (state) => {
-        state.isCommentSending = false;
+        state.statusComment = StatusComment.Error;
       })
       .addCase(getFavoriteOffersAction.pending, (state) => {
         state.isFavoritesLoading = true;

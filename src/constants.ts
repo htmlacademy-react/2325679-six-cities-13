@@ -1,9 +1,5 @@
 import { SortingOption, SortingType } from './types/sorting';
 
-export const Parameters = {
-  OffersCount: 5
-};
-
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -47,4 +43,11 @@ export enum SliceNames {
   Map = 'Map',
   Data = 'Data',
   Auth = 'Auth'
+}
+
+export enum StatusComment {
+  Idle = 'idle',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
 }

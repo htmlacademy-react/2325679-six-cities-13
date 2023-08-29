@@ -107,17 +107,17 @@ export const getOfferReviewsAction = createAsyncThunk<Review[], string, {
 );
 
 
-export const postNewCommentAction = createAsyncThunk<Review, Comment & {callback: () => void}, {
+export const postNewCommentAction = createAsyncThunk<Review, Comment & {onSuccess: () => void}, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'postNewComment',
   async (param, { extra: api }) => {
-    const { offerId, rating, comment, callback } = param;
+    const { offerId, rating, comment, onSuccess } = param;
     const response = await api.post<Review>(`/comments/${offerId}`, { rating, comment });
     if (response.status === 201) {
-      callback();
+      onSuccess();
     }
     const { data } = response;
     return data;

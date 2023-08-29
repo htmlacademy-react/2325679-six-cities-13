@@ -2,7 +2,8 @@ import React, { FormEventHandler } from 'react';
 import { ChangeEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postNewCommentAction } from '../../store/api-actions';
-import { getStatusSendingComment } from '../../store/offers-data/offers-data.selectors';
+import { getStatusComment } from '../../store/offers-data/offers-data.selectors';
+import { StatusComment } from '../../constants';
 
 const ratingData = [
   { value: 5, title: 'perfect' },
@@ -18,7 +19,7 @@ type ReviewFormProps = {
 
 function ReviewForm({ id }: ReviewFormProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const isCommentSending = useAppSelector(getStatusSendingComment);
+  const statusComment = useAppSelector(getStatusComment);
 
   const [review, setUserReview] = useState({
     rating: 0,
@@ -41,7 +42,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
     });
   };
 
-  const canSubmit = review.comment.length > 50 && review.rating > 0;
+  const canSubmit = review.comment.length >= 50 && review.comment.length <= 300 && review.rating > 0;
 
   const handleReviewFormSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -49,7 +50,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
       offerId: id,
       rating: review.rating,
       comment: review.comment,
-      callback: () => {
+      onSuccess: () => {
         setUserReview({
           rating: 0,
           comment: ''
@@ -60,7 +61,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
 
   return (
     <form className="reviews__form form" method="post" onSubmit={handleReviewFormSubmit}>
-      <fieldset disabled={isCommentSending} style={{ border: '0px solid white' }}>
+      <fieldset disabled={statusComment === StatusComment.Loading} style={{ border: '0px solid white' }}>
         <label className="reviews__label form__label" htmlFor="review">
           Your review
         </label>
@@ -71,12 +72,11 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
                 className="form__rating-input visually-hidden"
                 name="rating"
                 defaultValue={rating.value}
-                checked={rating.value === review.rating}
+                checked={Number(rating.value) === Number(review.rating)}
                 id={`${rating.value}-stars`}
                 type="radio"
                 onChange={handleRatingChange}
-                disabled={isCommentSending}
-                title={rating.title}
+                disabled={statusComment === StatusComment.Loading}
               />
               <label
                 htmlFor={`${rating.value}-stars`}
@@ -95,10 +95,9 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
           id="review"
           name="review"
           placeholder="Tell how was your stay, what you like and what can be improved"
-          disabled={isCommentSending}
+          disabled={statusComment === StatusComment.Loading}
           onChange={handleCommentChange}
           value={review.comment}
-          maxLength={300}
         />
         <div className="reviews__button-wrapper">
           <p className="reviews__help">
@@ -110,7 +109,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
           <button
             className="reviews__submit form__submit button"
             type="submit"
-            disabled={!canSubmit || isCommentSending}
+            disabled={!canSubmit || statusComment === StatusComment.Loading}
           >
             Submit
           </button>

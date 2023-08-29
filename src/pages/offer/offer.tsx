@@ -4,7 +4,7 @@ import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
-import Page404 from '../404/404';
+import Page404 from '../page-404/page-404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction, favoritesOfferAction } from '../../store/api-actions';

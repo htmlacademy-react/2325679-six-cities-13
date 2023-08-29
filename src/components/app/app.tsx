@@ -4,7 +4,7 @@ import MainPage from '../../pages/main/main';
 import LoginPage from '../../pages/login/login';
 import FavoritesPage from '../../pages/favorites/favorites';
 import OfferPage from '../../pages/offer/offer';
-import Page404 from '../../pages/404/404';
+import Page404 from '../../pages/page-404/page-404';
 import PrivateRoute from '../private-route/private-route';
 import {useAppSelector} from '../../hooks';
 import Loader from '../loader/loader';
@@ -27,17 +27,17 @@ function App(): JSX.Element {
   const token = getToken();
 
   useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Unknown && token) {
+    if (authorizationStatus === AuthorizationStatus.Unknown) {
       dispatch(loginAction({}));
     }
   });
 
   useEffect(() => {
-    if (offers.length === 0) {
-      dispatch(fetchOfferAction());
-    }
+    dispatch(fetchOfferAction());
+  }, [dispatch]);
 
-    if (authorizationStatus === AuthorizationStatus.Auth && token) {
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(getFavoriteOffersAction());
     }
 
@@ -45,7 +45,7 @@ function App(): JSX.Element {
       dispatch(clearFavortiteOffers());
     }
 
-  }, [authorizationStatus, dispatch, offers.length, token]);
+  }, [authorizationStatus, dispatch, offers, token]);
 
   if (isOffersDataLoading) {
     return (

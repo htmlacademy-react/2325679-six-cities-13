@@ -32,17 +32,9 @@ export type OfferData = {
   price: number;
   city: {
     name: string;
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
+    location: Location;
   };
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
@@ -57,7 +49,6 @@ export type OfferData = {
   images: string[];
   maxAdults: number;
 }
-
 
 export type Favorite = {
   offerId: string;

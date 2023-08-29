@@ -17,10 +17,11 @@ export type OffersData = {
   offerData: OfferData;
   errorOfferData: boolean;
   isOffersDataLoading: boolean;
-  isCommentSending: boolean;
+  statusComment: string;
   offersNearby: Offer[];
   offerReviews: Review[];
   favoriteOffers: (Offer | FavoriteOffer)[];
+  isFavoritesLoading: boolean;
 }
 
 export type MapType = {

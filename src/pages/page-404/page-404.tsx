@@ -3,6 +3,7 @@ import Logo from '../../components/logo/logo';
 import { useAppDispatch } from '../../hooks';
 import { setErrorOffer } from '../../store/offers-data/offers-data.slice';
 import { AppRoute } from '../../constants';
+import Auth from '../../components/auth/auth';
 
 function Page404(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ function Page404(): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
+            <Auth />
           </div>
         </div>
       </header>

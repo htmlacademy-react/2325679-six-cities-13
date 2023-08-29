@@ -10,7 +10,8 @@ export const getStatusLoading = (state: State): boolean => state[SliceNames.Data
 export const getOffersData = (state: State): OfferData => state[SliceNames.Data].offerData;
 export const getOffersNearby = (state: State): Offer[] => state[SliceNames.Data].offersNearby;
 export const getErrorOfferData = (state: State): boolean => state[SliceNames.Data].errorOfferData;
-export const getStatusSendingComment = (state: State): boolean => state[SliceNames.Data].isCommentSending;
+export const getStatusComment = (state: State): string => state[SliceNames.Data].statusComment;
 export const getOfferReviews = (state: State): Review[] => state[SliceNames.Data].offerReviews;
 export const getSortingType = (state: State): SortingType => state[SliceNames.Data].currentSortingType;
 export const getFavoritesOffers = (state: State): (Offer)[] => state[SliceNames.Data].favoriteOffers;
+export const getFavoritesStatusLoading = (state: State): boolean => state[SliceNames.Data].isFavoritesLoading;

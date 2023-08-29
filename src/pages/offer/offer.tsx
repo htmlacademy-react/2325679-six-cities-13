@@ -4,26 +4,24 @@ import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
-import Page404 from '../404/404';
+import Page404 from '../page-404/page-404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction, favoritesOfferAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { useEffect, useState } from 'react';
-import { getSelectedOfferId } from '../../store/map/map.selectors';
 import { getErrorOfferData, getOfferReviews, getOffersData, getOffersNearby } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 import { redirectToRoute } from '../../store/action';
+import { capitalizeString } from '../../utils';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const selectedOfferId = useAppSelector(getSelectedOfferId);
   const currentOfferData = useAppSelector(getOffersData);
   const currentOfferDataImages = currentOfferData.images;
   const neighbourOffers = useAppSelector(getOffersNearby).slice(0, 3);
   const errorOfferData = useAppSelector(getErrorOfferData);
-  const offersNearbyForMap = [...neighbourOffers, currentOfferData];
   const offerReviews = useAppSelector(getOfferReviews);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const [isFavorite, setIsFavorite] = useState(currentOfferData.isFavorite);
@@ -103,18 +101,18 @@ function OfferPage(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${currentOfferData.rating * 100 / 5}%` }} />
+                  <span style={{ width: `${Math.round(currentOfferData.rating) * 20}%` }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{currentOfferData.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{currentOfferData.type}</li>
+                <li className="offer__feature offer__feature--entire">{capitalizeString(currentOfferData.type)}</li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {currentOfferData.bedrooms} Bedrooms
+                  {currentOfferData.bedrooms} Bedroom{currentOfferData.bedrooms === 1 ? '' : 's'}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {currentOfferData.maxAdults} adults
+                  Max {currentOfferData.maxAdults} adult{currentOfferData.maxAdults === 1 ? '' : 's'}
                 </li>
               </ul>
               <div className="offer__price">
@@ -132,7 +130,7 @@ function OfferPage(): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper ${currentOfferData.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={currentOfferData.host.avatarUrl}
@@ -156,7 +154,7 @@ function OfferPage(): JSX.Element {
               </section>
             </div>
           </div>
-          <Map offers={offersNearbyForMap} layout='offers' selectedOfferId={selectedOfferId}></Map>
+          <Map offers={neighbourOffers} layout='offers' city={currentOfferData.city} offerData={currentOfferData}></Map>
         </section>
         <div className="container">
           <section className="near-places places">

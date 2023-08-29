@@ -5,14 +5,17 @@ import {loginAction} from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { redirectToRoute } from '../../store/action';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function LoginPage(): JSX.Element {
+  const dispatch = useAppDispatch();
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
-  const dispatch = useAppDispatch();
+  const regexPassword = /^(?=.*\d)(?=.*[a-z])\S*$/i;
+  const regexLogin = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+  const [isCorrectLogin, setIsCorrectLogin] = useState(true);
+  const [isCorrectPassword, setIsCorrectPassword] = useState(true);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -22,8 +25,21 @@ function LoginPage(): JSX.Element {
 
   const handleSubmit : FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+    setIsCorrectLogin(true);
+    setIsCorrectPassword(true);
 
     if (loginRef.current && passwordRef.current) {
+
+      if (!regexLogin.test(loginRef.current.value)) {
+        setIsCorrectLogin(false);
+        return;
+      }
+
+      if (!regexPassword.test(passwordRef.current.value)) {
+        setIsCorrectPassword(false);
+        return;
+      }
+
       dispatch(loginAction({
         email: loginRef.current.value,
         password: passwordRef.current.value
@@ -56,6 +72,7 @@ function LoginPage(): JSX.Element {
                   name="email"
                   placeholder="Email"
                 />
+                {!isCorrectLogin && <p>Enter a valid email</p>}
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
@@ -66,6 +83,9 @@ function LoginPage(): JSX.Element {
                   name="password"
                   placeholder="Password"
                 />
+                {!isCorrectPassword &&
+                  <p>Password must contain at least one letter, one capital letter and one number
+                  </p>}
               </div>
               <button className="login__submit form__submit button" type="submit">
                 Sign in

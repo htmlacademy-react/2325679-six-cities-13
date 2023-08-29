@@ -1,32 +1,33 @@
 import leaflet, { Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Offer, OfferData } from '../../types/offer';
+import { City, Offer, OfferData } from '../../types/offer';
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../constants';
 
 type MapProps = {
-  location?: string;
-  offers: (OfferData | Offer)[];
+  city?: City;
+  offers: Offer[];
   layout: string;
-  selectedOfferId: string;
+  selectedOfferId?: string;
+  offerData?: OfferData;
 }
 
 const defaultCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 });
 
 const currentCustomIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 });
 
-function Map({ offers, layout, selectedOfferId }: MapProps) {
+function Map({ offers, layout, selectedOfferId, city, offerData }: MapProps) {
   const mapRef = useRef(null);
-  const locationData = offers[0].city.location;
+  const locationData = city?.location || offers[0].city.location;
   const map = useMap(mapRef, locationData);
   const isOfferMap = layout === 'offers';
   const stylesMainMap = { height: '560px', width: '500px' };
@@ -55,11 +56,19 @@ function Map({ offers, layout, selectedOfferId }: MapProps) {
         ).addTo(markerLayer);
       });
 
+      if (offerData) {
+        const marker = new Marker({
+          lat: offerData.location.latitude,
+          lng: offerData.location.longitude,
+        });
+        marker.setIcon(currentCustomIcon).addTo(markerLayer);
+      }
+
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, locationData.latitude, locationData.longitude, locationData.zoom, selectedOfferId]);
+  }, [map, offers, locationData.latitude, locationData.longitude, locationData.zoom, selectedOfferId, offerData]);
 
   return (
     <section

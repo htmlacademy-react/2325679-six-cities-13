@@ -6,7 +6,7 @@ type ReviewListProps = {
 
 function ReviewItem({ review }: ReviewListProps): JSX.Element {
   const reviewDate = new Date(review.date);
-  const reviewDateMonth = reviewDate.toLocaleString('default', { month: 'long' });
+  const reviewDateMonth = reviewDate.toLocaleString('en', { month: 'long' });
   const formedReviewDateMonth = reviewDateMonth.slice(0,1).toUpperCase() + reviewDateMonth.slice(1);
   const reviewDateYear = reviewDate.getFullYear();
 

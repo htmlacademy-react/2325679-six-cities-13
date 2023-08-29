@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { favoritesOfferAction } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 import { redirectToRoute } from '../../store/action';
+import { capitalizeString } from '../../utils';
 
 type PlaceCardProps = {
   offer: Offer;
@@ -77,16 +78,16 @@ function PlaceCard({ offer, onMouseEvent, layout }: PlaceCardProps): JSX.Element
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${offer.rating * 100 / 5}%` }} />
+            <span style={{ width: `${Math.round(offer.rating) * 20}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <Link className="game__back" to={`${AppRoute.Offer}/${offer.id}`}>
-          <h2 className="place-card__name">
+        <h2 className="place-card__name">
+          <Link className="game__back" to={`${AppRoute.Offer}/${offer.id}`}>
             {offer.title}
-          </h2>
-        </Link>
-        <p className="place-card__type">{offer.type}</p>
+          </Link>
+        </h2>
+        <p className="place-card__type">{capitalizeString(offer.type)}</p>
       </div>
     </article>
   );

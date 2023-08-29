@@ -23,8 +23,9 @@ function Auth(): JSX.Element {
       <ul className="header__nav-list">
         {!authorizationStatusAuth &&
           <li className="header__nav-item">
-            <Link className="header__nav-link" to={AppRoute.Login}>
-              <span className="header__signout">Sign in</span>
+            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
+              <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+              <span className="header__login">Sign in</span>
             </Link>
           </li>}
         {authorizationStatusAuth &&
@@ -37,9 +38,9 @@ function Auth(): JSX.Element {
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                   <img src={userData.avatarUrl} alt={userData.email} />
                 </div>
-                <div className="header__user-name user__name">
+                <span className="header__user-name user__name">
                   {userData.email}
-                </div>
+                </span >
                 <span className="header__favorite-count">{favoritesOffers.length}</span>
               </Link>
             </li>
@@ -54,7 +55,7 @@ function Auth(): JSX.Element {
             </li>
           </>}
       </ul>
-    </nav>
+    </nav >
   );
 }
 

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { CITIES, DEFAULT_SORTING_TYPE, SliceNames } from '../../constants';
+import { CITIES, DEFAULT_SORTING_TYPE, SliceNames, StatusComment } from '../../constants';
 import { favoritesOfferAction, fetchOfferAction, getFavoriteOffersAction, getOfferDataAction, getOfferReviewsAction, getOffersNearbyAction, postNewCommentAction } from '../api-actions';
 import { OffersData } from '../../types/state';
 import { OfferData } from '../../types/offer';
@@ -14,10 +14,11 @@ const initialState: OffersData = {
   offerData: {} as OfferData,
   errorOfferData: false,
   isOffersDataLoading: true,
-  isCommentSending: false,
+  statusComment: StatusComment.Idle,
   offersNearby: [],
   offerReviews: [],
-  favoriteOffers: []
+  favoriteOffers: [],
+  isFavoritesLoading: false
 };
 
 export const offersData = createSlice({
@@ -48,8 +49,8 @@ export const offersData = createSlice({
     setErrorOffer: (state) => {
       state.errorOfferData = false;
     },
-    setFavortiteOffers: (state) => {
-      state.offersByCity.map((offer) => offer.isFavorite === false);
+    clearFavortiteOffers: (state) => {
+      state.favoriteOffers = [];
     }
   },
   extraReducers(builder) {
@@ -91,17 +92,24 @@ export const offersData = createSlice({
         state.errorOfferData = false;
       })
       .addCase(postNewCommentAction.pending, (state) => {
-        state.isCommentSending = true;
+        state.statusComment = StatusComment.Loading;
       })
       .addCase(postNewCommentAction.fulfilled, (state, action) => {
-        state.isCommentSending = false;
+        state.statusComment = StatusComment.Success;
         state.offerReviews.push(action.payload);
       })
       .addCase(postNewCommentAction.rejected, (state) => {
-        state.isCommentSending = false;
+        state.statusComment = StatusComment.Error;
+      })
+      .addCase(getFavoriteOffersAction.pending, (state) => {
+        state.isFavoritesLoading = true;
       })
       .addCase(getFavoriteOffersAction.fulfilled, (state, action) => {
         state.favoriteOffers = action.payload;
+        state.isFavoritesLoading = false;
+      })
+      .addCase(getFavoriteOffersAction.rejected, (state) => {
+        state.isFavoritesLoading = false;
       })
       .addCase(favoritesOfferAction.fulfilled, (state, action) => {
         if (action.meta.arg.status === 1) {
@@ -124,4 +132,4 @@ export const offersData = createSlice({
   }
 });
 
-export const { changeCity, getOffers, sortOffers, setErrorOffer, setFavortiteOffers } = offersData.actions;
+export const { changeCity, getOffers, sortOffers, setErrorOffer, clearFavortiteOffers } = offersData.actions;

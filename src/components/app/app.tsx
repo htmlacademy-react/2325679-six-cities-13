@@ -4,7 +4,7 @@ import MainPage from '../../pages/main/main';
 import LoginPage from '../../pages/login/login';
 import FavoritesPage from '../../pages/favorites/favorites';
 import OfferPage from '../../pages/offer/offer';
-import Page404 from '../../pages/404/404';
+import Page404 from '../../pages/page-404/page-404';
 import PrivateRoute from '../private-route/private-route';
 import {useAppSelector} from '../../hooks';
 import Loader from '../loader/loader';
@@ -16,6 +16,7 @@ import { getToken } from '../../services/token';
 import { useEffect } from 'react';
 import { getOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
+import { clearFavortiteOffers } from '../../store/offers-data/offers-data.slice';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -26,18 +27,25 @@ function App(): JSX.Element {
   const token = getToken();
 
   useEffect(() => {
-    if (offers.length === 0) {
-      dispatch(fetchOfferAction());
-    }
-
-    if (authorizationStatus === AuthorizationStatus.Unknown && token) {
+    if (authorizationStatus === AuthorizationStatus.Unknown) {
       dispatch(loginAction({}));
     }
+  });
 
-    if (authorizationStatus === AuthorizationStatus.Auth && token) {
+  useEffect(() => {
+    dispatch(fetchOfferAction());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(getFavoriteOffersAction());
     }
-  });
+
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(clearFavortiteOffers());
+    }
+
+  }, [authorizationStatus, dispatch, offers, token]);
 
   if (isOffersDataLoading) {
     return (
@@ -52,9 +60,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route path={AppRoute.Favorites}
           element={
-            <PrivateRoute
-              authorizationStatus={authorizationStatus}
-            >
+            <PrivateRoute>
               <FavoritesPage />
             </PrivateRoute>
           }

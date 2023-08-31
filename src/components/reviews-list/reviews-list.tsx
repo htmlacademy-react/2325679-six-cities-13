@@ -1,4 +1,5 @@
 
+import { REVIEWS_COUNT } from '../../constants';
 import { Review } from '../../types/review';
 import { sortReviews } from '../../utils';
 import ReviewItem from '../review-item/review-item';
@@ -8,7 +9,7 @@ type ReviewsListProps = {
 };
 
 function ReviewsList({reviews}: ReviewsListProps): JSX.Element {
-  const currentReviews = reviews.slice().sort(sortReviews).slice(0, 10);
+  const currentReviews = reviews.slice().sort(sortReviews).slice(0,REVIEWS_COUNT);
   return (
     <>
       <h2 className="reviews__title">

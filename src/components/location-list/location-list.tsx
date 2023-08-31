@@ -1,7 +1,7 @@
 import LocationItem from '../location-item/location-item';
 import { CITIES } from '../../constants';
 import { useAppDispatch } from '../../hooks/index';
-import { changeCity, getOffers } from '../../store/offers-data/offers-data.slice';
+import { changeCity } from '../../store/offers-data/offers-data.slice';
 import { Cities } from '../../types/location';
 import { useCallback } from 'react';
 
@@ -10,7 +10,6 @@ function LocationsList(): JSX.Element {
 
   const handleLocation = useCallback((city: Cities) => {
     dispatch(changeCity({ city }));
-    dispatch(getOffers());
   }, [dispatch]);
 
   return (

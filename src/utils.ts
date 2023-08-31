@@ -23,4 +23,13 @@ function capitalizeString(string: string) : string {
   return string && string[0].toUpperCase() + string.slice(1);
 }
 
-export { sortPriceUp, sortPriceDown, sortRate, sortReviews, capitalizeString };
+function sortOffers(offers: Offer[], sortingType: string) {
+  switch (sortingType) {
+    case 'popular': return offers.slice();
+    case 'priceRaise': return offers.slice().sort(sortPriceUp);
+    case 'priceFall': return offers.slice().sort(sortPriceDown);
+    case 'top': return offers.slice().sort(sortRate);
+  }
+}
+
+export { sortPriceUp, sortPriceDown, sortRate, sortReviews, capitalizeString, sortOffers };

@@ -4,13 +4,11 @@ import { favoritesOfferAction, fetchOfferAction, getFavoriteOffersAction, getOff
 import { OffersData } from '../../types/state';
 import { OfferData } from '../../types/offer';
 import { SortingType } from '../../types/sorting';
-import { sortPriceUp, sortPriceDown, sortRate } from '../../utils';
 
 const initialState: OffersData = {
   city: CITIES[0],
   currentSortingType: DEFAULT_SORTING_TYPE,
   offers: [],
-  offersByCity: [],
   offerData: {} as OfferData,
   errorOfferData: false,
   isOffersDataLoading: true,
@@ -29,22 +27,9 @@ export const offersData = createSlice({
       const { city } = action.payload;
       state.city = city;
     },
-    getOffers: (state) => {
-      state.offersByCity = state.offers.filter((offer) => (
-        offer.city.name === state.city
-      ));
-    },
     sortOffers: (state, action: PayloadAction<{ sortingType: SortingType }>) => {
       const { sortingType } = action.payload;
       state.currentSortingType = sortingType;
-      switch (sortingType) {
-        case 'priceRaise': state.offersByCity = state.offersByCity.sort(sortPriceUp); break;
-        case 'priceFall': state.offersByCity = state.offersByCity.sort(sortPriceDown); break;
-        case 'top': state.offersByCity = state.offersByCity.sort(sortRate); break;
-        default: state.offersByCity = state.offers.filter((offer) => (
-          offer.city.name === state.city
-        )); break;
-      }
     },
     setErrorOffer: (state) => {
       state.errorOfferData = false;
@@ -62,9 +47,6 @@ export const offersData = createSlice({
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.isOffersDataLoading = false;
         state.offers = action.payload;
-        state.offersByCity = action.payload.filter((offer) => (
-          offer.city.name === CITIES[0]
-        ));
         state.errorOfferData = false;
       })
       .addCase(fetchOfferAction.rejected, (state) => {
@@ -114,13 +96,13 @@ export const offersData = createSlice({
       .addCase(favoritesOfferAction.fulfilled, (state, action) => {
         if (action.meta.arg.status === 1) {
           state.favoriteOffers.push(action.payload);
-          state.offersByCity.map((offer) => {
+          state.offers.map((offer) => {
             if (offer.id === action.payload.id) {
               offer.isFavorite = true;
             }
           });
         } else {
-          state.offersByCity.map((offer) => {
+          state.offers.map((offer) => {
             if (offer.id === action.payload.id) {
               offer.isFavorite = false;
             }
@@ -132,4 +114,4 @@ export const offersData = createSlice({
   }
 });
 
-export const { changeCity, getOffers, sortOffers, setErrorOffer, clearFavortiteOffers } = offersData.actions;
+export const { changeCity, sortOffers, setErrorOffer, clearFavortiteOffers } = offersData.actions;

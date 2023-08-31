@@ -51,3 +51,14 @@ export enum StatusComment {
   Success = 'success',
   Error = 'error',
 }
+
+export const IMAGE_COUNT = 6;
+
+export enum CommentLengthLimit {
+  Minimum = 50,
+  Maximum = 300
+}
+
+export const REVIEWS_COUNT = 10;
+
+export const NEARBY_OFFERS_COUNT = 3;

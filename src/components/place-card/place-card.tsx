@@ -87,7 +87,10 @@ function PlaceCard({ offer, onMouseEvent, layout }: PlaceCardProps): JSX.Element
             {offer.title}
           </Link>
         </h2>
-        <p className="place-card__type">{capitalizeString(offer.type)}</p>
+        <p className="place-card__type">{offer.type === 'room'
+          ? 'Private Room'
+          : capitalizeString(offer.type)}
+        </p>
       </div>
     </article>
   );

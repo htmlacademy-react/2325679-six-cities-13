@@ -6,15 +6,15 @@ import { useAppSelector } from '../../hooks';
 import NoOffers from '../../components/no-offers/no-offers';
 import Sorting from '../../components/sorting/sorting';
 import Auth from '../../components/auth/auth';
-import { getLocation, getOffers } from '../../store/offers-data/offers-data.selectors';
+import { getLocation, getSortedOffers } from '../../store/offers-data/offers-data.selectors';
 import { getSelectedOfferId } from '../../store/map/map.selectors';
 
 function MainPage(): JSX.Element {
-  const offers = useAppSelector(getOffers);
+  const offers = useAppSelector(getSortedOffers);
   const location = useAppSelector(getLocation);
   const selectedOfferId = useAppSelector(getSelectedOfferId);
 
-  if (offers.length === 0) {
+  if (!offers || offers.length === 0) {
     return <NoOffers city={location} />;
   }
 

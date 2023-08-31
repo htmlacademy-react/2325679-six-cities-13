@@ -13,7 +13,6 @@ export type OffersData = {
   city: string;
   currentSortingType: SortingType;
   offers: Offer[];
-  offersByCity: Offer[];
   offerData: OfferData;
   errorOfferData: boolean;
   isOffersDataLoading: boolean;

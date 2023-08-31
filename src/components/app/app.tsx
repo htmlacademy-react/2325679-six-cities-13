@@ -14,7 +14,7 @@ import {useAppDispatch} from '../../hooks';
 import { fetchOfferAction, getFavoriteOffersAction, loginAction } from '../../store/api-actions';
 import { getToken } from '../../services/token';
 import { useEffect } from 'react';
-import { getOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
+import { getSortedOffers, getStatusLoading } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
 import { clearFavortiteOffers } from '../../store/offers-data/offers-data.slice';
 
@@ -23,7 +23,7 @@ function App(): JSX.Element {
 
   const isOffersDataLoading = useAppSelector(getStatusLoading);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const offers = useAppSelector(getOffers);
+  const offers = useAppSelector(getSortedOffers);
   const token = getToken();
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import Page404 from '../page-404/page-404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Auth from '../../components/auth/auth';
 import { getOfferDataAction, getOffersNearbyAction, getOfferReviewsAction, favoritesOfferAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../constants';
+import { AppRoute, AuthorizationStatus, IMAGE_COUNT, NEARBY_OFFERS_COUNT } from '../../constants';
 import { useEffect, useState } from 'react';
 import { getErrorOfferData, getOfferReviews, getOffersData, getOffersNearby } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/auth-process/auth-process.selectors';
@@ -20,7 +20,7 @@ function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const currentOfferData = useAppSelector(getOffersData);
   const currentOfferDataImages = currentOfferData.images;
-  const neighbourOffers = useAppSelector(getOffersNearby).slice(0, 3);
+  const neighbourOffers = useAppSelector(getOffersNearby).slice(0, NEARBY_OFFERS_COUNT);
   const errorOfferData = useAppSelector(getErrorOfferData);
   const offerReviews = useAppSelector(getOfferReviews);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -68,7 +68,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOfferDataImages.map((img) => (
+              {currentOfferDataImages.slice(0, IMAGE_COUNT).map((img) => (
                 <div className="offer__image-wrapper" key={img}>
                   <img
                     className="offer__image"
@@ -107,7 +107,10 @@ function OfferPage(): JSX.Element {
                 <span className="offer__rating-value rating__value">{currentOfferData.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{capitalizeString(currentOfferData.type)}</li>
+                <li className="offer__feature offer__feature--entire">{currentOfferData.type === 'room'
+                  ? 'Private Room'
+                  : capitalizeString(currentOfferData.type)}
+                </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {currentOfferData.bedrooms} Bedroom{currentOfferData.bedrooms === 1 ? '' : 's'}
                 </li>

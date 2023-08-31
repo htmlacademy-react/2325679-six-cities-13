@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postNewCommentAction } from '../../store/api-actions';
 import { getStatusComment } from '../../store/offers-data/offers-data.selectors';
-import { StatusComment } from '../../constants';
+import { CommentLengthLimit, StatusComment } from '../../constants';
 
 const ratingData = [
   { value: 5, title: 'perfect' },
@@ -42,7 +42,9 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
     });
   };
 
-  const canSubmit = review.comment.length >= 50 && review.comment.length <= 300 && review.rating > 0;
+  const canSubmit = review.comment.length >= CommentLengthLimit.Minimum
+    && review.comment.length <= CommentLengthLimit.Maximum
+    && review.rating > 0;
 
   const handleReviewFormSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();

@@ -30,7 +30,7 @@ function Map({ offers, layout, selectedOfferId, city, offerData }: MapProps) {
   const locationData = city?.location || offers[0].city.location;
   const map = useMap(mapRef, locationData);
   const isOfferMap = layout === 'offers';
-  const stylesMainMap = { height: '560px', width: '500px' };
+  const stylesMainMap = { height: '100%', width: '500px' };
   const stylesOfferMap = { width: '1149px', height: '579px', margin: '0px auto 50px' };
 
   useEffect(() => {
